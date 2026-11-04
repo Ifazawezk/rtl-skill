@@ -3,18 +3,19 @@
 import type { RuleId } from '../rules.ts';
 import type { RawFinding } from '../types.ts';
 import { checkDir, checkLang, pageLetters } from './checks/document.ts';
+import { flip, layoutChecks, snapshotLtr, snapshotRtl, unflip } from './checks/layout.ts';
+import { resetCssCache } from './css.ts';
 import { allElements } from './dom.ts';
 
 function info() {
   const html = document.documentElement;
   const counts = pageLetters();
+  const rtl = getComputedStyle(html).direction === 'rtl' || (document.body && getComputedStyle(document.body).direction === 'rtl');
   return {
     title: document.title,
     dir: html.getAttribute('dir'),
     lang: html.getAttribute('lang'),
-    direction: (getComputedStyle(html).direction === 'rtl' || (document.body && getComputedStyle(document.body).direction === 'rtl')
-      ? 'rtl'
-      : 'ltr') as 'rtl' | 'ltr',
+    direction: (rtl ? 'rtl' : 'ltr') as 'rtl' | 'ltr',
     rtlLetters: counts.rtl,
     ltrLetters: counts.ltr,
     viewport: { width: html.clientWidth, height: window.innerHeight },
@@ -25,6 +26,7 @@ function info() {
 /** Checks that need only the page as rendered. */
 function checks(rules: RuleId[]): RawFinding[] {
   const on = (id: RuleId) => rules.length === 0 || rules.includes(id);
+  resetCssCache();
   const counts = pageLetters();
   const findings: RawFinding[] = [];
   if (on('dir-attribute')) findings.push(...checkDir(counts));
@@ -32,7 +34,16 @@ function checks(rules: RuleId[]): RawFinding[] {
   return findings;
 }
 
-const api = { version: 1, info, checks };
+const api = {
+  version: 1,
+  info,
+  checks,
+  snapshotRtl,
+  flip,
+  snapshotLtr,
+  unflip,
+  layoutChecks,
+};
 
 export type RuntimeApi = typeof api;
 

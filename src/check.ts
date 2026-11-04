@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright';
 import { RULES, RULE_IDS, type RuleId } from './rules.ts';
+import { locateFindings } from './locate.ts';
 import { runtimeSource } from './runtime.ts';
 import type { Finding, RawFinding, Report } from './types.ts';
 
@@ -28,6 +29,9 @@ export interface CheckOptions {
 }
 
 export const DEFAULT_VIEWPORT = { width: 1280, height: 800 };
+
+/** Rules that compare the RTL render with an LTR render of the same page. */
+const LAYOUT_RULES: RuleId[] = ['physical-css', 'mirror-mismatch'];
 
 /** Turns a file path or URL into a URL Chromium can open. */
 export function resolveTarget(target: string): string {
@@ -74,8 +78,22 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
     const rules = selectedRules(options);
     const info = await page.evaluate(() => window.__rtlCheck.info());
     const raw: RawFinding[] = await page.evaluate((r) => window.__rtlCheck.checks(r), rules);
+    const skipped: Report['skipped'] = [];
 
-    const findings = finalize(raw);
+    const layoutRules = rules.filter((r) => LAYOUT_RULES.includes(r));
+    if (layoutRules.length && info.direction !== 'rtl') {
+      for (const rule of layoutRules) {
+        skipped.push({ rule, reason: 'the page does not render right to left (use --force-rtl to check it as RTL)' });
+      }
+    } else if (layoutRules.length) {
+      await page.evaluate(() => window.__rtlCheck.snapshotRtl());
+      await page.evaluate(() => window.__rtlCheck.flip());
+      await page.evaluate(() => window.__rtlCheck.snapshotLtr());
+      await page.evaluate(() => window.__rtlCheck.unflip());
+      raw.push(...(await page.evaluate((r) => window.__rtlCheck.layoutChecks(r), layoutRules)));
+    }
+
+    const findings = locateFindings(finalize(raw), url);
     return {
       target,
       page: { url, ...info },
@@ -84,7 +102,7 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
         errors: findings.filter((f) => f.severity === 'error').length,
         warnings: findings.filter((f) => f.severity === 'warning').length,
       },
-      skipped: [],
+      skipped,
       screenshots: {},
       durationMs: Date.now() - started,
     };
