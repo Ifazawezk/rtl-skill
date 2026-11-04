@@ -159,7 +159,7 @@ Isolate the island so it is laid out on its own, left to right:
 - In plain strings where you cannot add markup (`title`, `placeholder`, `<option>`, `aria-label`, notifications, `document.title`), wrap the value in Unicode isolates: LRI `U+2066` ... PDI `U+2069` for LTR, or FSI `U+2068` ... PDI when the direction is unknown.
 
 ```js
-const ltr = (s) => `⁦${s}⁩`;
+const ltr = (s) => `\u2066${s}\u2069`;
 t('call_us', { phone: ltr('+974 5555 1234') });
 ```
 
@@ -188,7 +188,7 @@ t('call_us', { phone: ltr('+974 5555 1234') });
 
 ```js
 // U+0660..U+0669 (Arabic-Indic) and U+06F0..U+06F9 (Persian) -> 0..9
-const toLatinDigits = (s) => s.replace(/[٠-٩۰-۹]/g, (d) => String(d.charCodeAt(0) & 0xf));
+const toLatinDigits = (s) => s.replace(/[\u0660-\u0669\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) & 0xf));
 ```
 
 - Prefer `type="text" inputmode="numeric"` over `type="number"` for codes and phone numbers.

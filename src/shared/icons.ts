@@ -57,9 +57,9 @@ export function classifyIconName(name: string): IconClass | null {
 export function normalizeLabel(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[ً-ٟـ]/g, '')
-    .replace(/[أإآ]/g, 'ا')
-    .replace(/[ىی]/g, 'ي');
+    .replace(/[\u064B-\u065F\u0640]/g, '')
+    .replace(/[\u0623\u0625\u0622]/g, '\u0627')
+    .replace(/[\u0649\u06CC]/g, '\u064A');
 }
 
 const words = (list: string) => new Set(list.split(/\s+/).filter(Boolean).map(normalizeLabel));
@@ -91,23 +91,23 @@ export function classifyLabel(text: string): Meaning | null {
 
 /** Arrows the bidi algorithm does not mirror, so they point the same way in RTL. */
 export const ARROW_GLYPHS: Record<string, Pointing> = {
-  '→': 'right', // rightwards arrow
-  '⟶': 'right', // long rightwards arrow
-  '➔': 'right',
-  '➜': 'right',
-  '➝': 'right',
-  '➞': 'right',
-  '➡': 'right',
-  '⇒': 'right', // double arrow
-  '⇨': 'right',
-  '←': 'left', // leftwards arrow
-  '⟵': 'left',
-  '⇐': 'left',
-  '⇦': 'left',
-  '⬅': 'left',
+  '\u2192': 'right', // rightwards arrow
+  '\u27F6': 'right', // long rightwards arrow
+  '\u2794': 'right',
+  '\u279C': 'right',
+  '\u279D': 'right',
+  '\u279E': 'right',
+  '\u27A1': 'right',
+  '\u21D2': 'right', // double arrow
+  '\u21E8': 'right',
+  '\u2190': 'left', // leftwards arrow
+  '\u27F5': 'left',
+  '\u21D0': 'left',
+  '\u21E6': 'left',
+  '\u2B05': 'left',
 };
 
-export const ARROW_RE = /[→⟶➔➜➝➞➡⇒⇨←⟵⇐⇦⬅]/g;
+export const ARROW_RE = /[\u2192\u27F6\u2794\u279C\u279D\u279E\u27A1\u21D2\u21E8\u2190\u27F5\u21D0\u21E6\u2B05]/g;
 
 /** Which way a forward or backward icon should point in RTL. */
 export function expectedPointing(meaning: Meaning): Pointing {

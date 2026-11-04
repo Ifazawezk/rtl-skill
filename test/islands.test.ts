@@ -36,6 +36,9 @@ describe('findLtrIslands', () => {
     ['a percentage', 'خصم 20% اليوم'],
     ['a number with a Latin unit', 'سعة 2 GB فقط'],
     ['sentence punctuation after a word', 'استخدم Python.'],
+    ['an ISO date', 'تاريخ الوصول 2015-07-19 من المصدر'],
+    ['a day-first date', 'آخر تحديث 19-07-2015 من المصدر'],
+    ['a handle typed with the @ last so it displays first', 'تابعنا BBCArabic@ الآن'],
   ])('ignores %s', (_label, text) => {
     expect(texts(text)).toEqual([]);
   });

@@ -4,8 +4,9 @@
 // transforms or by scripts.
 import type { RuleId } from '../../rules.ts';
 import type { Box, RawFinding } from '../../types.ts';
+import { hasRtlLetters } from '../../shared/script.ts';
 import { findDeclaration, type Declaration } from '../css.ts';
-import { allElements, cssPath, docBox, isVisible, ownText, style } from '../dom.ts';
+import { allElements, cssPath, docBox, isVisible, style } from '../dom.ts';
 
 interface Snap {
   box: Box;
@@ -224,8 +225,17 @@ export function logicalFor(property: string, value: string): string {
   return LOGICAL[property] ? `${LOGICAL[property]}: ${v}` : `a logical property instead of ${property}`;
 }
 
-function describeSide(group: string, decl: Declaration): string {
-  if (group === 'text-align') return /left/.test(decl.value) ? 'aligns RTL text to the left (its end)' : 'stays right-aligned in LTR too';
+/** Can you see the alignment? Not on Latin text, and not in a box that hugs its text. */
+function alignmentShows(el: Element): boolean {
+  if (!hasRtlLetters(el.textContent ?? '')) return false;
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return el.getBoundingClientRect().width - range.getBoundingClientRect().width > 8;
+}
+
+function describeSide(group: string, decl: Declaration, visibleBug: boolean): string {
+  if (visibleBug) return 'aligns RTL text to the left (its end)';
+  if (group === 'text-align' && /right/.test(decl.value)) return 'stays right-aligned in LTR too';
   return 'stays on the same side in both directions';
 }
 
@@ -248,7 +258,7 @@ export function comparePhysical(): { findings: RawFinding[]; elements: Element[]
     const el = els[0];
     flagged.push(...els);
     const css = `${decl.property}: ${decl.value}`;
-    const visibleBug = group === 'text-align' && /left/.test(decl.value) && /\p{L}/u.test(ownText(el) || el.textContent || '');
+    const visibleBug = group === 'text-align' && /left/.test(decl.value) && alignmentShows(el);
     const evidence: Record<string, string> = {
       css: decl.selector === 'style attribute' ? `style="${css}"` : `${decl.selector} { ${css} }`,
       source: decl.source,
@@ -263,7 +273,7 @@ export function comparePhysical(): { findings: RawFinding[]; elements: Element[]
       selector: cssPath(el),
       box: state.rtl.get(el)?.box,
       ltrBox: state.ltr.get(el)?.box,
-      message: `${css} is physical and ${describeSide(group, decl)}. Use ${logicalFor(decl.property, decl.value)}.`,
+      message: `${css} is physical and ${describeSide(group, decl, visibleBug)}. Use ${logicalFor(decl.property, decl.value)}.`,
       evidence,
     });
   }
@@ -287,7 +297,7 @@ export function compareMirror(explained: Element[]): RawFinding[] {
     if (Math.abs(dx) > tol) moved.push({ el, dx });
   }
   const byEl = new Map(moved.map((m) => [m.el, m.dx]));
-  const findings: RawFinding[] = [];
+  const groups = new Map<Element, { el: Element; dx: number }[]>();
   for (const { el, dx } of moved) {
     let sharedWithAncestor = false;
     for (let p = el.parentElement; p; p = p.parentElement) {
@@ -299,12 +309,23 @@ export function compareMirror(explained: Element[]): RawFinding[] {
     }
     if (sharedWithAncestor) continue;
     if (explained.some((p) => (p.parentElement ?? p).contains(el))) continue;
+    // One width difference shifts everything after it, so a row counts as one problem.
+    const key = el.parentElement?.closest('ul, ol, nav, menu, [role="menu"], [role="tablist"]') ?? el.parentElement ?? el;
+    const group = groups.get(key);
+    if (group) group.push({ el, dx });
+    else groups.set(key, [{ el, dx }]);
+  }
+
+  const findings: RawFinding[] = [];
+  for (const group of groups.values()) {
+    const { el, dx } = group.reduce((a, b) => (Math.abs(b.dx) > Math.abs(a.dx) ? b : a));
     const r = state.rtl.get(el)!;
     const l = state.ltr.get(el)!;
     const evidence: Record<string, string> = {
       rtl: `x ${Math.round(r.box.x)} to ${Math.round(r.box.x + r.box.width)}`,
       'mirrored ltr': `x ${Math.round(W - l.box.x - l.box.width)} to ${Math.round(W - l.box.x)}`,
     };
+    if (group.length > 1) evidence.boxes = `${group.length} boxes in this group are off, this is the largest`;
     const cause = transformCause(el);
     if (cause) Object.assign(evidence, cause);
     findings.push({

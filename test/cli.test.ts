@@ -96,6 +96,20 @@ describe('options', () => {
     expect(report.findings).toEqual([]);
   });
 
+  it('rates text-align: left as an error only when the alignment shows', async () => {
+    const arabic = JSON.parse((await run([fixture('physical-css/text-align-left.bug.html'), '--json'])).out) as Report;
+    const latin = JSON.parse((await run([fixture('physical-css/text-align-latin.bug.html'), '--json'])).out) as Report;
+    expect(arabic.findings[0].severity).toBe('error');
+    expect(latin.findings[0].severity).toBe('warning');
+  });
+
+  it('reports a row that drifts as one finding', async () => {
+    const { out } = await run([fixture('mirror-mismatch/row-drift.bug.html'), '--json']);
+    const report = JSON.parse(out) as Report;
+    expect(report.findings).toHaveLength(1);
+    expect(report.findings[0].evidence?.boxes).toMatch(/^\d+ boxes/);
+  });
+
   it('--mobile uses a phone viewport', async () => {
     const page = fixture('viewport-overflow/fixed-width-card.bug.html');
     const desktop = JSON.parse((await run([page, '--json'])).out) as Report;

@@ -29,7 +29,7 @@ function measure(node: Text, island: Island): Glyph[] | null {
   return glyphs;
 }
 
-const isSpace = (ch: string) => /[\s ]/.test(ch);
+const isSpace = (ch: string) => /[\s\u00A0]/.test(ch);
 
 export function isOutOfOrder(xs: number[]): boolean {
   for (let i = 1; i < xs.length; i++) if (xs[i] < xs[i - 1] - 0.5) return true;
@@ -46,7 +46,7 @@ export function visualText(glyphs: { ch: string; x: number }[]): string {
     .sort((a, b) => a.x - b.x)
     .map((g) => (reversed.has(g) && MIRRORED[g.ch] ? MIRRORED[g.ch] : g.ch))
     .join('')
-    .replace(/[\s ]+/g, ' ')
+    .replace(/[\s\u00A0]+/g, ' ')
     .trim();
 }
 

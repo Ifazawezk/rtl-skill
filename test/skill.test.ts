@@ -62,6 +62,12 @@ describe('generated skill files', () => {
     }
   });
 
+  it('keeps code samples readable: no invisible direction characters', () => {
+    for (const text of [guide, ...TARGETS.map(onDisk)]) {
+      expect(text).not.toMatch(/[\u200E\u200F\u061C\u202A-\u202E\u2066-\u2069\u00A0]/);
+    }
+  });
+
   it('keeps the house style: no em dashes, en dashes or emoji', () => {
     for (const text of [guide, ...TARGETS.map(onDisk)]) {
       expect(text).not.toMatch(/[–—]/);

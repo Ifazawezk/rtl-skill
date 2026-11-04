@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>fixture</title>
+  <style>
+    body { font: 16px/1.6 "Segoe UI", Tahoma, Arial, sans-serif; margin: 0; padding: 24px; background: #fafafa; color: #1f2933; }
+    main { max-width: 720px; margin: 0 auto; }
+    .card { position: relative; background: #fff; border: 1px solid #e4e7eb; border-radius: 8px; padding: 16px 20px; margin-block-end: 16px; }
+    h1 { font-size: 24px; line-height: 1.4; margin-block: 0 16px; }
+    h2 { font-size: 18px; margin-block: 0 8px; }
+    .acc { max-height: 0; overflow: hidden; }
+    .slider { overflow: hidden; inline-size: 300px; }
+    .track { display: flex; inline-size: 900px; }
+    .slide { flex: 0 0 300px; }
+    .gone { display: none; }
+    .ghost { visibility: hidden; position: absolute; left: -400px; }
+    .faded { opacity: 0; position: absolute; left: -400px; top: 0; }
+
+  </style>
+</head>
+<body>
+<main>
+  <h1>لوحات مغلقة</h1>
+  <div class="card">
+    <div class="acc"><p>محتوى قسم مغلق لا يظهر حتى يفتحه المستخدم بالنقر عليه.</p></div>
+    <div class="slider"><div class="track"><div class="slide">الشريحة الأولى</div><div class="slide">الشريحة الثانية التي لا تظهر الآن</div><div class="slide">الشريحة الثالثة</div></div></div>
+    <div class="gone">قائمة مخفية تماما عن المستخدم في هذه اللحظة</div>
+    <div class="ghost">قائمة مخفية بعيدا خارج الشاشة</div>
+    <div class="faded">طبقة شفافة خارج الشاشة تماما</div>
+  </div>
+</main>
+</body>
+</html>

@@ -94,6 +94,13 @@ function intentional(from: Element, to: Element, axis: 'x' | 'y'): boolean {
   return false;
 }
 
+function contentSize(el: Element, axis: 'x' | 'y'): number {
+  const cs = style(el);
+  return axis === 'x'
+    ? el.clientWidth - Number.parseFloat(cs.paddingLeft) - Number.parseFloat(cs.paddingRight)
+    : el.clientHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom);
+}
+
 function nearestBlock(el: Element): Element {
   let e: Element = el;
   while (style(e).display === 'inline' && e.parentElement) e = e.parentElement;
@@ -130,9 +137,18 @@ export function checkClipped(): RawFinding[] {
       }
       const overX = Math.max(box.left - text.left, text.right - box.right);
       const overY = Math.max(box.top - text.top, text.bottom - box.bottom);
-      const hitX = clipX && overX > 2 && !intentional(parent, a, 'x');
-      const hitY = clipY && overY > 2 && !intentional(parent, a, 'y');
-      if (!hitX && !hitY) continue;
+      const overflowsX = clipX && overX > 2;
+      const overflowsY = clipY && overY > 2;
+      // Text narrower than the box is sitting past its edge (a carousel peek), not too long for it.
+      const hitX = overflowsX && text.right - text.left > contentSize(a, 'x') && !intentional(parent, a, 'x');
+      const hitY = overflowsY && text.bottom - text.top > contentSize(a, 'y') && !intentional(parent, a, 'y');
+      if (!hitX && !hitY) {
+        if (overflowsX || overflowsY) {
+          hidden = true; // truncated on purpose, so it cannot spill either
+          break;
+        }
+        continue;
+      }
       clipped = true;
       if (reported.has(a)) break;
       reported.add(a);
@@ -149,7 +165,7 @@ export function checkClipped(): RawFinding[] {
       });
       break;
     }
-    if (clipped || hidden) continue;
+    if (clipped || hidden || !hasRtlLetters(node.data)) continue;
 
     const block = nearestBlock(parent);
     if (stop.includes(block) || reported.has(block)) continue;
