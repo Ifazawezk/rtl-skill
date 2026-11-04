@@ -1,0 +1,16 @@
+{
+  "name": "rtl-skill",
+  "owner": {
+    "name": "Mohaned Elhagar",
+    "url": "https://github.com/Ifazawezk"
+  },
+  "description": "Right-to-left UI skill for Claude Code.",
+  "plugins": [
+    {
+      "name": "rtl-skill",
+      "source": "./",
+      "description": "Build correct right-to-left interfaces: logical CSS, bidi isolation, icon mirroring, Arabic typography and Intl.",
+      "version": "0.1.0"
+    }
+  ]
+}

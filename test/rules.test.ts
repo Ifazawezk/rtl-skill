@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { RULES, RULE_IDS, getRule, parseRuleList } from '../src/rules';
+import { RULES, RULE_IDS, getRule, parseRuleList } from '../src/rules.ts';
 
 describe('rule registry', () => {
   it('has one entry per id, keyed by its own id', () => {

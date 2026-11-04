@@ -1,0 +1,9 @@
+{
+  "name": "rtl",
+  "description": "Build and review right-to-left (RTL) interfaces for Arabic, Persian, Hebrew and Urdu: dir and lang, CSS logical properties instead of left/right, flex and grid direction, icon mirroring, phone numbers and code inside RTL text (bdi, dir=ltr islands), mixed-direction inputs, Arabic fonts and line-height, no letter-spacing on Arabic, truncation, Intl dates and digits, charts and progress bars, and Tailwind, React and Vue specifics. Use when writing or fixing UI that must work in an RTL language, when a page contains Arabic, Persian, Hebrew or Urdu text, or when the user mentions RTL, bidi, dir=rtl or Arabic UI.",
+  "cursor": {
+    "description": "Right-to-left (RTL) UI rules for Arabic, Persian, Hebrew and Urdu: logical CSS, bidi isolation, icon mirroring, Arabic typography, Intl",
+    "globs": "**/*.html, **/*.css, **/*.scss, **/*.jsx, **/*.tsx, **/*.vue, **/*.svelte, **/*.astro",
+    "alwaysApply": false
+  }
+}

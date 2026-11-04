@@ -6,7 +6,7 @@ import {
   isRtlLanguage,
   langMatchesScript,
   rtlShare,
-} from '../src/shared/script';
+} from '../src/shared/script.ts';
 
 describe('countLetters', () => {
   it('counts Arabic, Hebrew and Latin letters and ignores digits and spaces', () => {

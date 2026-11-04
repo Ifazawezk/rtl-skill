@@ -1,0 +1,13 @@
+{
+  "name": "rtl-skill",
+  "version": "0.1.0",
+  "description": "Teach Claude Code to build correct right-to-left interfaces for Arabic, Persian, Hebrew and Urdu: logical CSS, bidi isolation, icon mirroring, Arabic typography and Intl.",
+  "author": {
+    "name": "Mohaned Elhagar",
+    "url": "https://github.com/Ifazawezk"
+  },
+  "homepage": "https://github.com/Ifazawezk/rtl-skill",
+  "repository": "https://github.com/Ifazawezk/rtl-skill",
+  "license": "MIT",
+  "keywords": ["rtl", "arabic", "hebrew", "persian", "urdu", "bidi", "i18n", "css", "tailwindcss"]
+}

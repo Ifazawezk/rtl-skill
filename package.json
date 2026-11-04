@@ -9,6 +9,8 @@
     "node": ">=18.17"
   },
   "scripts": {
+    "skill": "node scripts/build-skill.ts",
+    "skill:check": "node scripts/build-skill.ts --check",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -20,5 +22,21 @@
     "esbuild": "^0.28.2",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"
-  }
+  },
+  "keywords": [
+    "rtl",
+    "right-to-left",
+    "arabic",
+    "hebrew",
+    "persian",
+    "urdu",
+    "bidi",
+    "claude-code",
+    "cursor",
+    "codex",
+    "agent-skills",
+    "playwright",
+    "i18n",
+    "accessibility"
+  ]
 }
