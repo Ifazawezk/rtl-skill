@@ -1,4 +1,6 @@
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { createServer } from 'node:http';
+import type { AddressInfo } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
@@ -49,6 +51,7 @@ describe('exit codes', () => {
     [['--rules', 'nope', 'x.html']],
     [['--viewport', 'big', 'x.html']],
     [['--fail-on', 'sometimes', 'x.html']],
+    [['--timeout', 'soon', 'x.html']],
     [['--no-such-flag', 'x.html']],
     [[]],
   ])('is 2 for bad usage: %j', async (args) => {
@@ -108,6 +111,26 @@ describe('options', () => {
     const report = JSON.parse(out) as Report;
     expect(report.findings).toHaveLength(1);
     expect(report.findings[0].evidence?.boxes).toMatch(/^\d+ boxes/);
+  });
+
+  it('checks what rendered when a page never finishes loading', async () => {
+    const server = createServer((req, res) => {
+      if (req.url === '/never') return; // this request hangs, like a stuck ad
+      res.setHeader('content-type', 'text/html; charset=utf-8');
+      res.end('<!doctype html><html lang="ar"><body><img src="/never"><p>صفحة عربية كاملة لا ينتهي تحميلها أبدا مهما انتظرنا</p></body></html>');
+    });
+    await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
+    const url = `http://127.0.0.1:${(server.address() as AddressInfo).port}/`;
+    try {
+      const { code, out } = await run([url, '--json', '--timeout', '800']);
+      const report = JSON.parse(out) as Report;
+      expect(code).toBe(1);
+      expect(report.notes[0]).toContain('did not finish loading');
+      expect(report.findings.map((f) => f.rule)).toContain('dir-attribute');
+    } finally {
+      server.closeAllConnections();
+      server.close();
+    }
   });
 
   it('--mobile uses a phone viewport', async () => {
@@ -175,6 +198,7 @@ describe('helpers', () => {
       findings: [],
       summary: { errors: 0, warnings: 0 },
       skipped: [],
+      notes: [],
       screenshots: {},
       durationMs: 5,
     };

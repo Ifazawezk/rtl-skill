@@ -57,6 +57,8 @@ export interface Report {
   summary: { errors: number; warnings: number };
   /** Rules that did not run, with the reason. */
   skipped: { rule: RuleId; reason: string }[];
+  /** Things worth knowing about this run, such as a page that never finished loading. */
+  notes: string[];
   screenshots: { annotated?: string; mirror?: string };
   durationMs: number;
 }

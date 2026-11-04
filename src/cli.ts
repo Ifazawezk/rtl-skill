@@ -27,6 +27,7 @@ Options
   --fail-on <level>      exit 1 on: error (default), warning or never
   --wait-for <selector>  wait for an element before checking
   --wait <ms>            wait this long after load
+  --timeout <ms>         how long to wait for the page to load (default 30000)
   --no-color             plain output
   -h, --help             show this help
   -v, --version          show the version
@@ -88,6 +89,7 @@ async function check(argv: string[], io: CliIO): Promise<number> {
         'fail-on': { type: 'string', default: 'error' },
         'wait-for': { type: 'string' },
         wait: { type: 'string' },
+        timeout: { type: 'string' },
         'no-color': { type: 'boolean' },
         help: { type: 'boolean', short: 'h' },
         version: { type: 'boolean', short: 'v' },
@@ -124,6 +126,10 @@ async function check(argv: string[], io: CliIO): Promise<number> {
     if (values.mobile) options.viewport = { width: 390, height: 844 };
     if (values.viewport) options.viewport = parseViewport(values.viewport);
     if (values.wait) options.waitMs = Number.parseInt(values.wait, 10);
+    if (values.timeout) {
+      options.timeoutMs = Number.parseInt(values.timeout, 10);
+      if (!(options.timeoutMs > 0)) throw new Error(`--timeout must be a number of milliseconds (got "${values.timeout}")`);
+    }
   } catch (err) {
     io.err(`${(err as Error).message}\n`);
     return 2;

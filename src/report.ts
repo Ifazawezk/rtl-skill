@@ -36,8 +36,9 @@ export function formatText(report: Report, options: TextOptions = { color: false
     lines.push('');
   }
 
+  for (const n of report.notes) lines.push(c('yellow', `  note: ${n}`));
   for (const s of report.skipped) lines.push(c('dim', `  skipped ${s.rule}: ${s.reason}`));
-  if (report.skipped.length) lines.push('');
+  if (report.skipped.length || report.notes.length) lines.push('');
 
   const { errors, warnings } = report.summary;
   const total = `${errors} ${errors === 1 ? 'error' : 'errors'}, ${warnings} ${warnings === 1 ? 'warning' : 'warnings'}`;

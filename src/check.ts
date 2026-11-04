@@ -25,6 +25,8 @@ export interface CheckOptions {
   waitFor?: string;
   /** Extra wait in milliseconds after load. */
   waitMs?: number;
+  /** How long to wait for the page to load, in milliseconds. */
+  timeoutMs?: number;
   /** Write report.json, annotated.png and mirror.png to this folder. */
   outDir?: string;
   /** Reuse a running browser instead of launching one. */
@@ -32,6 +34,7 @@ export interface CheckOptions {
 }
 
 export const DEFAULT_VIEWPORT = { width: 1280, height: 800 };
+export const DEFAULT_TIMEOUT = 30_000;
 
 /** Rules that compare the RTL render with an LTR render of the same page. */
 const LAYOUT_RULES: RuleId[] = ['physical-css', 'mirror-mismatch'];
@@ -75,7 +78,17 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
   try {
     const page = await context.newPage();
     const url = resolveTarget(target);
-    await page.goto(url, { waitUntil: 'load' });
+    const notes: string[] = [];
+    const timeout = options.timeoutMs ?? DEFAULT_TIMEOUT;
+    await page.goto(url, { waitUntil: 'commit', timeout });
+    // Ads and trackers can hold these events back forever. Check what rendered instead of giving up.
+    const deadline = Date.now() + timeout;
+    try {
+      await page.waitForLoadState('domcontentloaded', { timeout });
+      await page.waitForLoadState('load', { timeout: Math.max(1, deadline - Date.now()) });
+    } catch {
+      notes.push(`The page did not finish loading within ${timeout} ms, so this checks what had rendered by then.`);
+    }
     if (options.waitFor) await page.waitForSelector(options.waitFor);
     if (options.waitMs) await page.waitForTimeout(options.waitMs);
     await settle(page, options);
@@ -114,6 +127,7 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
         warnings: findings.filter((f) => f.severity === 'warning').length,
       },
       skipped,
+      notes,
       screenshots: {},
       durationMs: 0,
     };
@@ -140,7 +154,9 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
 
 /** Waits for fonts, stops transitions and applies --force-rtl. */
 async function settle(page: Page, options: CheckOptions): Promise<void> {
-  await page.evaluate(() => document.fonts.ready.then(() => true));
+  await page.evaluate(() =>
+    Promise.race([document.fonts.ready.then(() => true), new Promise((done) => setTimeout(() => done(false), 3000))]),
+  );
   await page.addStyleTag({
     content:
       '*,*::before,*::after{transition:none!important;animation-play-state:paused!important;scroll-behavior:auto!important;caret-color:transparent!important}',
