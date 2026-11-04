@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+# browsers, if PLAYWRIGHT_BROWSERS_PATH points inside the repo
+ms-playwright/
+.playwright/
+# checker output
+rtl-report/
+out/
+test-results/
+*.log
+.DS_Store
+Thumbs.db
