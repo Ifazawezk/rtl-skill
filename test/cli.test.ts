@@ -133,6 +133,48 @@ describe('options', () => {
     }
   });
 
+  it('reads rules from external stylesheets, which pages themselves may not', async () => {
+    const { out } = await run([fixture('physical-css/external-stylesheet.bug.html'), '--json']);
+    const report = JSON.parse(out) as Report;
+    expect(report.findings).toHaveLength(1);
+    expect(report.findings[0].evidence?.css).toBe('.promo { padding-right: 32px }');
+    expect(report.findings[0].evidence?.at).toMatch(/fixtures\/physical-css\/assets\/site\.css:2$/);
+    expect(report.notes).toEqual([]);
+  });
+
+  it('says so when a cross-origin stylesheet cannot be read', async () => {
+    // A second origin serves the stylesheet to the page, then refuses when the checker asks for it.
+    let served = 0;
+    const cdn = createServer((req, res) => {
+      if (served++ === 0) {
+        res.setHeader('content-type', 'text/css');
+        res.end('.x { margin-left: 8px }');
+      } else {
+        res.statusCode = 403;
+        res.end();
+      }
+    });
+    await new Promise<void>((done) => cdn.listen(0, '127.0.0.1', done));
+    const cdnUrl = `http://127.0.0.1:${(cdn.address() as AddressInfo).port}/a.css`;
+    const site = createServer((req, res) => {
+      res.setHeader('content-type', 'text/html; charset=utf-8');
+      res.end(`<!doctype html><html lang="ar" dir="rtl"><link rel="stylesheet" href="${cdnUrl}"><p class="x">نص عربي قصير</p>`);
+    });
+    await new Promise<void>((done) => site.listen(0, 'localhost', done));
+    const url = `http://localhost:${(site.address() as AddressInfo).port}/`;
+    try {
+      const report = JSON.parse((await run([url, '--json', '--fail-on', 'never'])).out) as Report;
+      expect(report.notes.join(' ')).toContain('could not be read');
+      expect(report.notes.join(' ')).toContain(cdnUrl);
+      expect(served).toBe(2); // one refusal is final: no retry
+    } finally {
+      for (const server of [cdn, site]) {
+        server.closeAllConnections();
+        server.close();
+      }
+    }
+  });
+
   it('--mobile uses a phone viewport', async () => {
     const page = fixture('viewport-overflow/fixed-width-card.bug.html');
     const desktop = JSON.parse((await run([page, '--json'])).out) as Report;

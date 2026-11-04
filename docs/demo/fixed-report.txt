@@ -1,0 +1,4 @@
+rtl-check  demo/fixed/index.html
+  1280x800, dir=rtl, lang=ar, 302 RTL and 11 LTR letters
+
+0 errors, 0 warnings, no RTL problems found

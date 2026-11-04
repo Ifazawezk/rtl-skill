@@ -201,6 +201,13 @@ function isCentered(el: Element): boolean {
   return Math.abs(r.left + r.width / 2 - (cb.left + cb.width / 2)) < 2;
 }
 
+/** padding: 16px 20px is the same on both sides, so it cannot be the physical problem. */
+export function isSymmetricShorthand(property: string, value: string): boolean {
+  if (!['margin', 'padding', 'inset', 'border-width'].includes(property)) return false;
+  const [top, right = top, , left = right] = value.trim().split(/\s+/);
+  return right === left;
+}
+
 const LOGICAL: Record<string, string> = {
   'margin-left': 'margin-inline-start',
   'margin-right': 'margin-inline-end',
@@ -254,7 +261,7 @@ export function comparePhysical(): { findings: RawFinding[]; elements: Element[]
   for (const cand of physicalCandidates()) {
     for (const longhand of cand.longhands) {
       const decl = findDeclaration(cand.el, longhand);
-      if (!decl) continue;
+      if (!decl || isSymmetricShorthand(decl.property, decl.value)) continue;
       const key = `${decl.source}|${decl.selector}|${decl.property}|${decl.value}`;
       const entry = groups.get(key);
       if (entry) {
@@ -290,6 +297,16 @@ export function comparePhysical(): { findings: RawFinding[]; elements: Element[]
   return { findings, elements: flagged };
 }
 
+/** Could physical CSS on `p` be the reason `el` moved? Itself, its content, or its row. */
+function explains(p: Element, el: Element): boolean {
+  if (p.contains(el)) return true;
+  const row = p.parentElement;
+  if (!row || row === document.body || !row.contains(el)) return false;
+  const cs = style(p);
+  if (cs.position === 'absolute' || cs.position === 'fixed') return false;
+  return /flex|grid/.test(style(row).display) || cs.float !== 'none' || cs.display.startsWith('inline');
+}
+
 /** Boxes that are not where the mirrored LTR layout puts them. */
 export function compareMirror(explained: Element[]): RawFinding[] {
   const W = document.documentElement.clientWidth;
@@ -318,7 +335,7 @@ export function compareMirror(explained: Element[]): RawFinding[] {
       }
     }
     if (sharedWithAncestor) continue;
-    if (explained.some((p) => (p.parentElement ?? p).contains(el))) continue;
+    if (explained.some((p) => explains(p, el))) continue;
     // One width difference shifts everything after it, so a row counts as one problem.
     const key = el.parentElement?.closest('ul, ol, nav, menu, [role="menu"], [role="tablist"]') ?? el.parentElement ?? el;
     const group = groups.get(key);

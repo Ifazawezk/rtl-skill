@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>rtl-skill banner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@500;700&family=Inter:wght@500;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; }
+    body { width: 1280px; height: 420px; background: #0b1220; color: #f8fafc; font-family: Inter, "Segoe UI", Arial, sans-serif; overflow: hidden; }
+    .wrap { box-sizing: border-box; height: 100%; padding: 56px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    h1 { font-size: 76px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 14px; }
+    h1 span { color: #2dd4bf; }
+    .tag { font-size: 25px; line-height: 1.35; font-weight: 500; color: #cbd5e1; margin: 0 0 20px; }
+    .ar { font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif; font-size: 25px; font-weight: 500; color: #94a3b8; margin: 0; text-align: left; }
+    .panel { background: #111a2e; border: 1px solid #243047; border-radius: 16px; padding: 24px 28px; }
+    .label { font-size: 15px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-family: "JetBrains Mono", Consolas, monospace; font-size: 32px; font-weight: 700; padding: 8px 0; }
+    .row em { font-family: Inter, Arial, sans-serif; font-style: normal; font-size: 15px; font-weight: 600; padding: 3px 12px; border-radius: 999px; }
+    .bad { color: #fda4af; }
+    .bad em { background: #4c0519; color: #fda4af; }
+    .good { color: #5eead4; }
+    .good em { background: #042f2e; color: #5eead4; }
+    hr { border: 0; border-top: 1px solid #243047; margin: 16px 0; }
+    .sentence { font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif; font-size: 21px; color: #e2e8f0; direction: rtl; text-align: right; margin: 0 0 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div>
+      <h1>rtl<span>-skill</span></h1>
+      <p class="tag">Teach coding agents to build right-to-left interfaces. Then check the result in a real browser.</p>
+      <p class="ar" dir="rtl">واجهات عربية صحيحة من أول مرة</p>
+    </div>
+    <div class="panel">
+      <p class="sentence">اتصل بنا على رقم الجوال</p>
+      <div class="label">Without isolation</div>
+      <div class="row bad"><span dir="ltr">1234 5555 974+</span><em>bidi-order</em></div>
+      <hr>
+      <div class="label">With &lt;bdi dir="ltr"&gt;</div>
+      <div class="row good"><span dir="ltr">+974 5555 1234</span><em>pass</em></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,10 +1,10 @@
 {
   "date": "2026-10-30",
   "chromium": "156.0.8078.4",
-  "elapsedMs": 8664,
-  "findings": 48,
+  "elapsedMs": 9108,
+  "findings": 49,
   "overall": {
-    "tp": 39,
+    "tp": 40,
     "fp": 0,
     "fn": 0,
     "precision": 1,
@@ -61,7 +61,7 @@
       "recall": 1
     },
     "physical-css": {
-      "tp": 7,
+      "tp": 8,
       "fp": 0,
       "fn": 0,
       "precision": 1,
@@ -85,10 +85,10 @@
   "falsePositives": [],
   "falseNegatives": [],
   "pages": {
-    "bug": 39,
-    "fixed": 39,
+    "bug": 40,
+    "fixed": 40,
     "clean": 20,
-    "passed": 98
+    "passed": 100
   },
   "results": [
     {
@@ -694,6 +694,24 @@
     },
     {
       "path": "fixtures/physical-css/badge-position.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/external-stylesheet.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/external-stylesheet.fixed.html",
       "kind": "fixed",
       "expect": [],
       "allow": [],

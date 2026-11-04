@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>متجر الدوحة: إتمام الطلب</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  </svg>
+  <aside class="drawer"><p>الأقسام</p></aside>
+  <header class="site-header">
+    <a class="brand" href="#"><span class="brand-mark"></span>متجر الدوحة</a>
+    <nav class="site-nav"><a href="#">الرئيسية</a><a href="#">العروض</a><a href="#">الأقسام</a></nav>
+    <a class="cart" href="#">السلة <span class="count">3</span></a>
+  </header>
+  <main class="page">
+    <ol class="crumbs">
+      <li><a href="#">الرئيسية</a></li>
+      <li><svg class="sep" aria-hidden="true"><use href="#chevron-right"></use></svg></li>
+      <li><a href="#">السلة</a></li>
+      <li><svg class="sep" aria-hidden="true"><use href="#chevron-right"></use></svg></li>
+      <li>إتمام الطلب</li>
+    </ol>
+    <p class="eyebrow">الخطوة الثانية من ثلاث</p>
+    <h1>إتمام الطلب</h1>
+    <div class="steps" role="progressbar" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100" aria-label="تقدم الطلب"><div class="steps-fill"></div></div>
+    <div class="layout">
+      <section class="card">
+        <h2>بيانات التوصيل</h2>
+        <label for="name">الاسم الكامل</label>
+        <input id="name" autocomplete="name">
+        <label for="email">البريد الإلكتروني</label>
+        <input id="email" type="email" autocomplete="email">
+        <label for="mobile">رقم الجوال</label>
+        <input id="mobile" inputmode="tel" autocomplete="tel">
+        <div class="actions">
+          <button class="btn-primary">متابعة إلى الدفع الآمن <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg></button>
+          <a href="#">العودة إلى السلة</a>
+        </div>
+      </section>
+      <aside class="card">
+        <span class="badge">شحن مجاني</span>
+        <h2>ملخص الطلب</h2>
+        <p class="order">رقم الطلب #A-1029</p>
+        <ul class="items">
+          <li><span>سماعات لاسلكية</span><span>٢٥٠ ر.ق.</span></li>
+          <li><span>شاحن سريع</span><span>٨٥ ر.ق.</span></li>
+          <li><strong>المجموع</strong><strong>٣٣٥ ر.ق.</strong></li>
+        </ul>
+        <blockquote class="note">يصل طلبك خلال يومين داخل الدوحة.</blockquote>
+        <p class="help">للمساعدة اتصل على +974 5555 1234 أو راسلنا على help@doha.qa.</p>
+        <a class="more" href="#">اقرأ المزيد عن الاسترجاع →</a>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

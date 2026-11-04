@@ -50,18 +50,42 @@ export function resetCssCache(): void {
   ruleCache = null;
 }
 
+/** Copies of stylesheets the page may not read itself, parsed but never applied. */
+const readableCopies = new Map<string, CSSStyleSheet>();
+
+/** Stylesheets whose rules are blocked: anything cross-origin, and every file:// stylesheet. */
+export function blockedSheets(): string[] {
+  const hrefs: string[] = [];
+  for (const sheet of Array.from(document.styleSheets)) {
+    try {
+      void sheet.cssRules;
+    } catch {
+      if (sheet.href) hrefs.push(sheet.href);
+    }
+  }
+  return hrefs;
+}
+
+export function addSheetCopy(href: string, css: string): void {
+  const copy = new CSSStyleSheet();
+  copy.replaceSync(css);
+  readableCopies.set(href, copy);
+  ruleCache = null;
+}
+
 function collectRules() {
   if (ruleCache) return ruleCache;
   const out: RuleEntry[] = [];
   const styleEls = Array.from(document.querySelectorAll('style'));
   let order = 0;
   for (const sheet of Array.from(document.styleSheets)) {
-    let rules: CSSRuleList;
+    let rules: CSSRuleList | undefined;
     try {
       rules = sheet.cssRules;
     } catch {
-      continue; // cross-origin stylesheet
+      rules = sheet.href ? readableCopies.get(sheet.href)?.cssRules : undefined;
     }
+    if (!rules) continue;
     const owner = sheet.ownerNode as Element | null;
     let source = 'stylesheet';
     let styleIndex: number | undefined;

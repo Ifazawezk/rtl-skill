@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { findDeclarationOffset, lineOf, styleBlocks } from '../src/locate.ts';
-import { logicalFor } from '../src/page/checks/layout.ts';
+import { isSymmetricShorthand, logicalFor } from '../src/page/checks/layout.ts';
 
 describe('findDeclarationOffset', () => {
   const css = '.a { color: red; }\n.btn > .icon {\n  margin-right: 8px;\n}\n@media (min-width: 600px) {\n  .a{margin-left:4px}\n}\n';
@@ -31,6 +31,19 @@ describe('styleBlocks', () => {
     const blocks = styleBlocks(html);
     expect(blocks).toHaveLength(2);
     expect(html.slice(blocks[1].start, blocks[1].start + 4)).toBe('.b{}');
+  });
+});
+
+describe('isSymmetricShorthand', () => {
+  it.each([
+    ['padding', '16px 20px', true],
+    ['margin', '0px auto', true],
+    ['padding', '8px', true],
+    ['padding', '4px 8px 12px', true],
+    ['margin', '0px 16px 0px 0px', false],
+    ['padding-left', '8px', false],
+  ])('%s: %s -> %s', (property, value, expected) => {
+    expect(isSymmetricShorthand(property, value)).toBe(expected);
   });
 });
 

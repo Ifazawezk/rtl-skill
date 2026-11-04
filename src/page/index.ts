@@ -8,7 +8,7 @@ import { checkInputs } from './checks/inputs.ts';
 import { checkIcons } from './checks/icons.ts';
 import { flip, layoutChecks, snapshotLtr, snapshotRtl, unflip } from './checks/layout.ts';
 import { checkClipped, checkLetterSpacing, checkOverflow } from './checks/text.ts';
-import { resetCssCache } from './css.ts';
+import { addSheetCopy, blockedSheets } from './css.ts';
 import { allElements } from './dom.ts';
 import { clearOverlay, drawOverlay } from './overlay.ts';
 
@@ -31,7 +31,6 @@ function info() {
 /** Checks that need only the page as rendered. */
 function checks(rules: RuleId[]): RawFinding[] {
   const on = (id: RuleId) => rules.length === 0 || rules.includes(id);
-  resetCssCache();
   const counts = pageLetters();
   const findings: RawFinding[] = [];
   if (on('dir-attribute')) findings.push(...checkDir(counts));
@@ -54,6 +53,8 @@ const api = {
   snapshotLtr,
   unflip,
   layoutChecks,
+  blockedSheets,
+  addSheetCopy,
   drawOverlay,
   clearOverlay,
 };

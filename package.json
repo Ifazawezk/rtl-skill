@@ -51,6 +51,7 @@
     "skill": "node scripts/build-skill.ts",
     "skill:check": "node scripts/build-skill.ts --check",
     "bench": "node scripts/bench.ts",
+    "docs": "node scripts/render-docs.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

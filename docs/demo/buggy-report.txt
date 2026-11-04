@@ -1,0 +1,127 @@
+rtl-check  demo/buggy/index.html
+  1280x800, dir=rtl, lang=ar, 309 RTL and 11 LTR letters
+
+   1  error    viewport-overflow     aside.drawer
+      This box sticks out 300px past the left edge of the 1280px viewport and gives the page a horizontal scrollbar.
+      box: x -300 to 0, width 300
+      position: absolute
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#flex-grid-and-positioning
+
+   2  error    arabic-letter-spacing p.eyebrow
+      letter-spacing: 1.96px on Arabic-script text "الخطوة الثانية من ثلاث". Safari draws the letters disconnected, even though Chromium ignores the spacing.
+      letter-spacing: 1.96px
+      set on: p.eyebrow
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#arabic-typography
+
+   3  error    physical-css          label:nth-of-type(1)
+      text-align: left is physical and aligns RTL text to the left (its end). Use text-align: start.
+      css: label { text-align: left }
+      fix: text-align: start
+      elements: 3 elements use this rule
+      at: demo/buggy/style.css:30
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+   4  error    bidi-order            p.order
+      "#A-1029" renders as "A-1029#". Wrap it in <bdi dir="ltr"> or <span dir="ltr">.
+      source: #A-1029
+      rendered: A-1029#
+      kind: Latin run
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#numbers-phone-numbers-code-and-urls-inside-rtl-text
+
+   5  error    ltr-input             #mobile
+      This phone field is right to left, so "+974 5555 1234" shows as "1234 5555 974+". Use type="tel" or add dir="ltr".
+      field: <input type="text">
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#forms-and-mixed-direction-inputs
+
+   6  error    bidi-order            p.help
+      "+974 5555 1234" renders as "1234 5555 974+". Wrap it in <bdi dir="ltr"> or <span dir="ltr">.
+      source: +974 5555 1234
+      rendered: 1234 5555 974+
+      kind: phone number
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#numbers-phone-numbers-code-and-urls-inside-rtl-text
+
+   7  error    text-clipped          button.btn-primary
+      Text "متابعة إلى الدفع الآمن" is cut off: it needs 146px but the box is 150px wide.
+      overflow: hidden hidden
+      size: 150x44
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#truncation-and-text-that-grows
+
+   8  error    icon-mirroring        a.more
+      The arrow character "→" points right, but forward is left in RTL. Arrow characters are not mirrored by the bidi algorithm, so write the opposite arrow or use a mirrored icon.
+      meaning: forward, from the label
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#icons-mirror-or-not
+
+   9  error    icon-mirroring        svg.icon
+      This icon points right, but forward is left in RTL. Mirror it with transform: scaleX(-1) under [dir="rtl"] or use the opposite icon.
+      meaning: forward, from the label
+      icon: icon arrow-right
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#icons-mirror-or-not
+
+  10  warning  physical-css          aside.drawer
+      left: -300px is physical and stays on the same side in both directions. Use inset-inline-start: -300px.
+      css: .drawer { left: -300px }
+      source: style.css
+      fix: inset-inline-start: -300px
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+  11  warning  physical-css          a.cart
+      margin-left: auto is physical and stays on the same side in both directions. Use margin-inline-start: auto.
+      css: .cart { margin-left: auto }
+      fix: margin-inline-start: auto
+      at: demo/buggy/style.css:27
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+  12  warning  icon-mirroring        li:nth-of-type(4) > svg.sep
+      This icon points right, but forward is left in RTL. Mirror it with transform: scaleX(-1) under [dir="rtl"] or use the opposite icon.
+      meaning: forward, assumed from the icon name
+      icon: sep chevron-right
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#icons-mirror-or-not
+
+  13  warning  icon-mirroring        li:nth-of-type(2) > svg.sep
+      This icon points right, but forward is left in RTL. Mirror it with transform: scaleX(-1) under [dir="rtl"] or use the opposite icon.
+      meaning: forward, assumed from the icon name
+      icon: sep chevron-right
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#icons-mirror-or-not
+
+  14  warning  mirror-mismatch       div.steps-fill
+      This box does not mirror: it sits 354px to the left of where the mirrored LTR layout puts it. Check transforms, transform-origin and scripts that set left or right.
+      rtl: x 120 to 806
+      mirrored ltr: x 474 to 1160
+      transform: matrix(0.66, 0, 0, 1, 0, 0)
+      transform-origin: 0px 5px
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#flex-grid-and-positioning
+
+  15  warning  physical-css          span.badge
+      right: 14px is physical and stays on the same side in both directions. Use inset-inline-end: 14px.
+      css: .badge { right: 14px }
+      fix: inset-inline-end: 14px
+      at: demo/buggy/style.css:33
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+  16  warning  ltr-input             #email
+      This email field holds an LTR value but is right to left, so a trailing "." or "/" jumps to the front while it is typed. Add dir="ltr".
+      field: <input type="email">
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#forms-and-mixed-direction-inputs
+
+  17  warning  physical-css          blockquote.note
+      padding-left: 12px is physical and stays on the same side in both directions. Use padding-inline-start: 12px.
+      css: .note { padding-left: 12px }
+      fix: padding-inline-start: 12px
+      at: demo/buggy/style.css:34
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+  18  warning  physical-css          blockquote.note
+      border-left: 4px solid rgb(15, 118, 110) is physical and stays on the same side in both directions. Use border-inline-start: 4px solid rgb(15, 118, 110).
+      css: .note { border-left: 4px solid rgb(15, 118, 110) }
+      fix: border-inline-start: 4px solid rgb(15, 118, 110)
+      at: demo/buggy/style.css:34
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+  19  warning  physical-css          svg.icon
+      margin-left: 8px is physical and stays on the same side in both directions. Use margin-inline-start: 8px.
+      css: .btn-primary .icon { margin-left: 8px }
+      fix: margin-inline-start: 8px
+      at: demo/buggy/style.css:32
+      docs: https://github.com/Ifazawezk/rtl-skill/blob/main/skills/rtl/SKILL.md#logical-css-properties
+
+9 errors, 10 warnings

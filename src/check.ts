@@ -1,7 +1,7 @@
 // Runs the checks against one page in headless Chromium.
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright';
 import { renderMirror, screenshot, type Shot } from './annotate.ts';
 import { RULES, RULE_IDS, type RuleId } from './rules.ts';
@@ -95,6 +95,10 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
     await page.addScriptTag({ content: await runtimeSource() });
 
     const rules = selectedRules(options);
+    const unreadable = await readBlockedSheets(page);
+    if (unreadable.length) {
+      notes.push(`${unreadable.length} stylesheet(s) could not be read, so physical-css cannot name rules from them: ${unreadable.join(', ')}`);
+    }
     const info = await page.evaluate(() => window.__rtlCheck.info());
     const raw: RawFinding[] = await page.evaluate((r) => window.__rtlCheck.checks(r), rules);
     const skipped: Report['skipped'] = [];
@@ -150,6 +154,31 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
     await context.close();
     if (!options.browser) await browser.close();
   }
+}
+
+/**
+ * Browsers hide the rules of cross-origin stylesheets from page scripts, and
+ * every file:// stylesheet counts as cross-origin. Node fetches those itself
+ * and hands the text to the page. Returns the ones it could not get.
+ */
+async function readBlockedSheets(page: Page): Promise<string[]> {
+  const unreadable: string[] = [];
+  for (const href of await page.evaluate(() => window.__rtlCheck.blockedSheets())) {
+    try {
+      let css: string;
+      if (href.startsWith('file:')) {
+        css = readFileSync(fileURLToPath(href), 'utf8');
+      } else {
+        const response = await page.context().request.get(href, { timeout: 10_000 });
+        if (!response.ok()) throw new Error(`HTTP ${response.status()}`);
+        css = await response.text();
+      }
+      await page.evaluate(([h, c]) => window.__rtlCheck.addSheetCopy(h, c), [href, css]);
+    } catch {
+      unreadable.push(href);
+    }
+  }
+  return unreadable;
 }
 
 /** Waits for fonts, stops transitions and applies --force-rtl. */

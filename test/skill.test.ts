@@ -70,7 +70,7 @@ describe('generated skill files', () => {
 
   it('keeps the house style: no em dashes, en dashes or emoji', () => {
     for (const text of [guide, ...TARGETS.map(onDisk)]) {
-      expect(text).not.toMatch(/[–—]/);
+      expect(text).not.toMatch(/[\u2013\u2014]/);
       expect(text).not.toMatch(/\p{Extended_Pictographic}/u);
     }
   });
