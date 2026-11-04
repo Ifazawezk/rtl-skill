@@ -34,7 +34,7 @@ export const DEFAULT_VIEWPORT = { width: 1280, height: 800 };
 const LAYOUT_RULES: RuleId[] = ['physical-css', 'mirror-mismatch'];
 
 /** Rules that only mean something when the page renders right to left. */
-const RTL_ONLY_RULES: RuleId[] = [...LAYOUT_RULES, 'bidi-order', 'ltr-input'];
+const RTL_ONLY_RULES: RuleId[] = [...LAYOUT_RULES, 'bidi-order', 'ltr-input', 'icon-mirroring'];
 
 /** Turns a file path or URL into a URL Chromium can open. */
 export function resolveTarget(target: string): string {
