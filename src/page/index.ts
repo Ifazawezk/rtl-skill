@@ -2,7 +2,9 @@
 // script that the checker injects into the page under test.
 import type { RuleId } from '../rules.ts';
 import type { RawFinding } from '../types.ts';
+import { checkBidi } from './checks/bidi.ts';
 import { checkDir, checkLang, pageLetters } from './checks/document.ts';
+import { checkInputs } from './checks/inputs.ts';
 import { flip, layoutChecks, snapshotLtr, snapshotRtl, unflip } from './checks/layout.ts';
 import { resetCssCache } from './css.ts';
 import { allElements } from './dom.ts';
@@ -31,6 +33,8 @@ function checks(rules: RuleId[]): RawFinding[] {
   const findings: RawFinding[] = [];
   if (on('dir-attribute')) findings.push(...checkDir(counts));
   if (on('lang-attribute')) findings.push(...checkLang(counts));
+  if (on('bidi-order')) findings.push(...checkBidi());
+  if (on('ltr-input')) findings.push(...checkInputs());
   return findings;
 }
 

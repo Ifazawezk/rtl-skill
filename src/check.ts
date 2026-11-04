@@ -33,6 +33,9 @@ export const DEFAULT_VIEWPORT = { width: 1280, height: 800 };
 /** Rules that compare the RTL render with an LTR render of the same page. */
 const LAYOUT_RULES: RuleId[] = ['physical-css', 'mirror-mismatch'];
 
+/** Rules that only mean something when the page renders right to left. */
+const RTL_ONLY_RULES: RuleId[] = [...LAYOUT_RULES, 'bidi-order', 'ltr-input'];
+
 /** Turns a file path or URL into a URL Chromium can open. */
 export function resolveTarget(target: string): string {
   if (/^(https?|file|data|about):/i.test(target)) return target;
@@ -80,12 +83,13 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
     const raw: RawFinding[] = await page.evaluate((r) => window.__rtlCheck.checks(r), rules);
     const skipped: Report['skipped'] = [];
 
-    const layoutRules = rules.filter((r) => LAYOUT_RULES.includes(r));
-    if (layoutRules.length && info.direction !== 'rtl') {
-      for (const rule of layoutRules) {
+    if (info.direction !== 'rtl') {
+      for (const rule of rules.filter((r) => RTL_ONLY_RULES.includes(r))) {
         skipped.push({ rule, reason: 'the page does not render right to left (use --force-rtl to check it as RTL)' });
       }
-    } else if (layoutRules.length) {
+    }
+    const layoutRules = rules.filter((r) => LAYOUT_RULES.includes(r));
+    if (layoutRules.length && info.direction === 'rtl') {
       await page.evaluate(() => window.__rtlCheck.snapshotRtl());
       await page.evaluate(() => window.__rtlCheck.flip());
       await page.evaluate(() => window.__rtlCheck.snapshotLtr());

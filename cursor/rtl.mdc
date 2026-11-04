@@ -182,7 +182,7 @@ t('call_us', { phone: ltr('+974 5555 1234') });
 <input id="name" dir="auto" autocomplete="name">
 ```
 
-- `dir="ltr"` on email, URL, phone, IBAN, card number, coupon code, username and password fields. Without it a typed `+974 5555 1234` shows with its groups reversed, and an email jumps around while the user types `@` and `.`.
+- `dir="ltr"` on email, URL, IBAN, card number, coupon code, username and password fields, and on any phone field that is not `type="tel"`. Chromium and WebKit already render `type="tel"` left to right, but a phone number in `type="text"` shows as `1234 5555 974+`. Email and URL fields stay RTL, so the trailing `.` or `/` of a half-typed value jumps to the front: `name@doha.` shows as `.name@doha`.
 - With `dir="ltr"` the value is aligned left. To keep it on the right edge like the other fields, add `text-align: right` to that input. The value keeps its LTR order.
 - `dir="auto"` for names, addresses, messages and search boxes, which people type in either script.
 - Accept Arabic-Indic digits. Many people type `٥٥٥٥` on an Arabic keyboard. Normalize before validating:
