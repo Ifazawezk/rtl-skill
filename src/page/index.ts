@@ -10,6 +10,7 @@ import { flip, layoutChecks, snapshotLtr, snapshotRtl, unflip } from './checks/l
 import { checkClipped, checkLetterSpacing, checkOverflow } from './checks/text.ts';
 import { resetCssCache } from './css.ts';
 import { allElements } from './dom.ts';
+import { clearOverlay, drawOverlay } from './overlay.ts';
 
 function info() {
   const html = document.documentElement;
@@ -53,6 +54,8 @@ const api = {
   snapshotLtr,
   unflip,
   layoutChecks,
+  drawOverlay,
+  clearOverlay,
 };
 
 export type RuntimeApi = typeof api;

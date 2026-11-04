@@ -1,4 +1,5 @@
 // Command line entry: rtl-check <url-or-file...> and rtl-skill <command>.
+import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { checkPage, launchBrowser, type CheckOptions } from './check.ts';
 import { formatText } from './report.ts';
@@ -16,6 +17,7 @@ Usage
 
 Options
   --json                 print the report as JSON
+  --out <dir>            write report.json, annotated.png and mirror.png to <dir>
   --viewport <WxH>       viewport size (default 1280x800)
   --mobile               same as --viewport 390x844
   --force-rtl            set dir="rtl" on <html> first, for apps that start LTR
@@ -76,6 +78,7 @@ async function check(argv: string[], io: CliIO): Promise<number> {
       allowPositionals: true,
       options: {
         json: { type: 'boolean' },
+        out: { type: 'string' },
         viewport: { type: 'string' },
         mobile: { type: 'boolean' },
         'force-rtl': { type: 'boolean' },
@@ -135,7 +138,8 @@ async function check(argv: string[], io: CliIO): Promise<number> {
   try {
     browser = await launchBrowser();
     for (const target of positionals) {
-      const report = await checkPage(target, { ...options, browser });
+      const outDir = values.out ? (positionals.length > 1 ? join(values.out, slug(target)) : values.out) : undefined;
+      const report = await checkPage(target, { ...options, browser, outDir });
       reports.push(report);
       if (!values.json) io.out(formatText(report, { color }) + (positionals.length > 1 ? '\n' : ''));
     }
@@ -152,6 +156,16 @@ async function check(argv: string[], io: CliIO): Promise<number> {
     failOn === 'never' ? false : failOn === 'warning' ? r.findings.length > 0 : r.summary.errors > 0,
   );
   return failing ? 1 : 0;
+}
+
+/** A folder name for one target when several are checked in one run. */
+export function slug(target: string): string {
+  const name = target
+    .replace(/^[a-z]+:\/+/i, '')
+    .replace(/\.html?$/i, '')
+    .replace(/[^\p{L}\p{N}._-]+/gu, '-')
+    .replace(/^-+|-+$/g, '');
+  return name.slice(-80) || 'page';
 }
 
 export function parseViewport(text: string): { width: number; height: number } {

@@ -1,8 +1,9 @@
 // Runs the checks against one page in headless Chromium.
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright';
+import { renderMirror, screenshot, type Shot } from './annotate.ts';
 import { RULES, RULE_IDS, type RuleId } from './rules.ts';
 import { locateFindings } from './locate.ts';
 import { runtimeSource } from './runtime.ts';
@@ -24,6 +25,8 @@ export interface CheckOptions {
   waitFor?: string;
   /** Extra wait in milliseconds after load. */
   waitMs?: number;
+  /** Write report.json, annotated.png and mirror.png to this folder. */
+  outDir?: string;
   /** Reuse a running browser instead of launching one. */
   browser?: Browser;
 }
@@ -82,6 +85,8 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
     const info = await page.evaluate(() => window.__rtlCheck.info());
     const raw: RawFinding[] = await page.evaluate((r) => window.__rtlCheck.checks(r), rules);
     const skipped: Report['skipped'] = [];
+    let rtlShot: Shot | undefined;
+    let ltrShot: Shot | undefined;
 
     if (info.direction !== 'rtl') {
       for (const rule of rules.filter((r) => RTL_ONLY_RULES.includes(r))) {
@@ -91,14 +96,16 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
     const layoutRules = rules.filter((r) => LAYOUT_RULES.includes(r));
     if (layoutRules.length && info.direction === 'rtl') {
       await page.evaluate(() => window.__rtlCheck.snapshotRtl());
+      if (options.outDir) rtlShot = await screenshot(page);
       await page.evaluate(() => window.__rtlCheck.flip());
       await page.evaluate(() => window.__rtlCheck.snapshotLtr());
+      if (options.outDir) ltrShot = await screenshot(page);
       await page.evaluate(() => window.__rtlCheck.unflip());
       raw.push(...(await page.evaluate((r) => window.__rtlCheck.layoutChecks(r), layoutRules)));
     }
 
     const findings = locateFindings(finalize(raw), url);
-    return {
+    const report: Report = {
       target,
       page: { url, ...info },
       findings,
@@ -108,8 +115,23 @@ export async function checkPage(target: string, options: CheckOptions = {}): Pro
       },
       skipped,
       screenshots: {},
-      durationMs: Date.now() - started,
+      durationMs: 0,
     };
+
+    if (options.outDir) {
+      mkdirSync(options.outDir, { recursive: true });
+      await page.evaluate((f) => window.__rtlCheck.drawOverlay(f), findings);
+      report.screenshots.annotated = join(options.outDir, 'annotated.png');
+      writeFileSync(report.screenshots.annotated, (await screenshot(page)).png);
+      await page.evaluate(() => window.__rtlCheck.clearOverlay());
+      if (rtlShot && ltrShot) {
+        report.screenshots.mirror = join(options.outDir, 'mirror.png');
+        writeFileSync(report.screenshots.mirror, await renderMirror(context, rtlShot, ltrShot, findings, info.viewport.width));
+      }
+    }
+    report.durationMs = Date.now() - started;
+    if (options.outDir) writeFileSync(join(options.outDir, 'report.json'), JSON.stringify(report, null, 2) + '\n');
+    return report;
   } finally {
     await context.close();
     if (!options.browser) await browser.close();
