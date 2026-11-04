@@ -2,6 +2,7 @@
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { checkPage, launchBrowser, type CheckOptions } from './check.ts';
+import { TOOLS, install, type Tool } from './install.ts';
 import { formatText } from './report.ts';
 import { RULES, parseRuleList } from './rules.ts';
 import type { Report } from './types.ts';
@@ -13,6 +14,7 @@ const HELP = `rtl-check: find right-to-left layout bugs in a real browser
 Usage
   rtl-check <url-or-file...> [options]
   rtl-skill check <url-or-file...> [options]
+  rtl-skill install <claude|cursor|codex> [--dir <path>] [--global]
   rtl-skill rules
 
 Options
@@ -52,6 +54,7 @@ export async function main(argv: string[], io: CliIO = defaultIO, bin = 'rtl-che
   if (bin !== 'rtl-check') {
     const [command, ...rest] = argv;
     if (command === 'rules') return listRules(io);
+    if (command === 'install') return installCommand(rest, io);
     if (command === 'check') args = rest;
     else if (!command || command === '-h' || command === '--help') {
       io.out(HELP);
@@ -62,6 +65,24 @@ export async function main(argv: string[], io: CliIO = defaultIO, bin = 'rtl-che
     }
   }
   return check(args, io);
+}
+
+function installCommand(argv: string[], io: CliIO): number {
+  try {
+    const { values, positionals } = parseArgs({
+      args: argv,
+      allowPositionals: true,
+      options: { dir: { type: 'string' }, global: { type: 'boolean' } },
+    });
+    const tool = positionals[0] as Tool;
+    if (!TOOLS.includes(tool)) throw new Error(`Choose a tool: rtl-skill install <${TOOLS.join('|')}>`);
+    const result = install(tool, { dir: values.dir, global: values.global });
+    io.out(`${result.action}: ${result.path}\n`);
+    return 0;
+  } catch (err) {
+    io.err(`rtl-skill: ${(err as Error).message}\n`);
+    return 2;
+  }
 }
 
 function listRules(io: CliIO): number {
