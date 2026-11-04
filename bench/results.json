@@ -1,10 +1,10 @@
 {
   "date": "2026-10-30",
   "chromium": "156.0.8078.4",
-  "elapsedMs": 9771,
-  "findings": 47,
+  "elapsedMs": 8664,
+  "findings": 48,
   "overall": {
-    "tp": 38,
+    "tp": 39,
     "fp": 0,
     "fn": 0,
     "precision": 1,
@@ -75,7 +75,7 @@
       "recall": 1
     },
     "viewport-overflow": {
-      "tp": 3,
+      "tp": 4,
       "fp": 0,
       "fn": 0,
       "precision": 1,
@@ -85,10 +85,10 @@
   "falsePositives": [],
   "falseNegatives": [],
   "pages": {
-    "bug": 38,
-    "fixed": 38,
+    "bug": 39,
+    "fixed": 39,
     "clean": 20,
-    "passed": 96
+    "passed": 98
   },
   "results": [
     {
@@ -874,6 +874,24 @@
     },
     {
       "path": "fixtures/viewport-overflow/fixed-width-card.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/viewport-overflow/invisible-panel.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [],
+      "found": [
+        "viewport-overflow"
+      ]
+    },
+    {
+      "path": "fixtures/viewport-overflow/invisible-panel.fixed.html",
       "kind": "fixed",
       "expect": [],
       "allow": [],

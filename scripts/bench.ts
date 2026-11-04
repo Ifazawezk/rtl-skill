@@ -81,8 +81,14 @@ try {
   await measure(
     'holdout',
     'holdout',
-    'Held-out results',
-    'These pages were written after the checker was frozen, with cases expected to be hard.',
+    'Held-out round 1, current code',
+    'Round 1 was blind on its first run (see holdout-first-run.md). Its misses then drove fixes, so this rerun is no longer blind.',
+  );
+  await measure(
+    'holdout-2',
+    'holdout-2',
+    'Held-out round 2, current code',
+    'Round 2 was written after the round 1 fixes, against the frozen checker. See holdout-2-first-run.md for the blind run.',
   );
   if (!tuned) process.exitCode = 1;
 } finally {

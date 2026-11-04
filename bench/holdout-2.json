@@ -1,0 +1,427 @@
+{
+  "date": "2026-10-30",
+  "chromium": "156.0.8078.4",
+  "elapsedMs": 3209,
+  "findings": 21,
+  "overall": {
+    "tp": 20,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1,
+    "recall": 1
+  },
+  "perRule": {
+    "arabic-letter-spacing": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "bidi-order": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "dir-attribute": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "icon-mirroring": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "lang-attribute": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "ltr-input": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "mirror-mismatch": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "physical-css": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "text-clipped": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "viewport-overflow": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "falsePositives": [],
+  "falseNegatives": [],
+  "pages": {
+    "bug": 20,
+    "fixed": 0,
+    "clean": 16,
+    "passed": 36
+  },
+  "results": [
+    {
+      "path": "holdout-2/active-nav-border.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout-2/admin-preview.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/autocomplete-url.bug.html",
+      "kind": "bug",
+      "expect": [
+        "ltr-input"
+      ],
+      "allow": [],
+      "found": [
+        "ltr-input"
+      ]
+    },
+    {
+      "path": "holdout-2/code-in-dir-ltr.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/date-with-month.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/email-end-of-sentence.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/english-tag-on-persian.bug.html",
+      "kind": "bug",
+      "expect": [
+        "lang-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "lang-attribute"
+      ]
+    },
+    {
+      "path": "holdout-2/external-sprite.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout-2/file-path.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout-2/fixed-height-title.bug.html",
+      "kind": "bug",
+      "expect": [
+        "text-clipped"
+      ],
+      "allow": [],
+      "found": [
+        "text-clipped"
+      ]
+    },
+    {
+      "path": "holdout-2/float-right-photo.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout-2/four-value-margin.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout-2/hebrew-no-dir.bug.html",
+      "kind": "bug",
+      "expect": [
+        "dir-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "dir-attribute"
+      ]
+    },
+    {
+      "path": "holdout-2/hero-center.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/hyphenated-latin.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/language-name-in-cell.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout-2/latin-list-in-parens.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/list-marker-arrow.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout-2/long-url-on-phone.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [],
+      "found": [
+        "viewport-overflow"
+      ]
+    },
+    {
+      "path": "holdout-2/lucide-class.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout-2/material-ligature.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout-2/negative-margin-hero.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [],
+      "found": [
+        "viewport-overflow"
+      ]
+    },
+    {
+      "path": "holdout-2/number-table.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/phone-in-heading.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout-2/pill-tags.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/positioned-tooltip.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout-2/rating-stars.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/rotated-arrow-button.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/round-avatar.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/row-reverse-hack.bug.html",
+      "kind": "bug",
+      "expect": [
+        "mirror-mismatch"
+      ],
+      "allow": [],
+      "found": [
+        "mirror-mismatch"
+      ]
+    },
+    {
+      "path": "holdout-2/slash-breadcrumb.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/small-nudge-top.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/sticky-footer-bar.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/svg-bar-chart.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout-2/tracking-utility.bug.html",
+      "kind": "bug",
+      "expect": [
+        "arabic-letter-spacing"
+      ],
+      "allow": [],
+      "found": [
+        "arabic-letter-spacing"
+      ]
+    },
+    {
+      "path": "holdout-2/translated-dropdown.bug.html",
+      "kind": "bug",
+      "expect": [
+        "mirror-mismatch"
+      ],
+      "allow": [],
+      "found": [
+        "mirror-mismatch"
+      ]
+    }
+  ]
+}

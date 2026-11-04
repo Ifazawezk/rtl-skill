@@ -52,7 +52,48 @@ export function checkOverflow(): RawFinding[] {
       },
     });
   }
+  if (pageScrolls && findings.length === 0) findings.push(overflowingText(vw));
   return findings;
+}
+
+/** The page scrolls but no box sticks out, so long unbreakable text must be doing it. */
+function overflowingText(vw: number): RawFinding {
+  const by = document.documentElement.scrollWidth - vw;
+  for (const node of textNodes()) {
+    const parent = node.parentElement!;
+    if (!isVisible(parent) || hasClippingAncestor(parent)) continue;
+    const text = textBounds(node);
+    if (!text || (text.left >= -1 && text.right <= vw + 1)) continue;
+    return {
+      rule: 'viewport-overflow',
+      severity: 'error',
+      selector: cssPath(parent),
+      box: docBox(parent.getBoundingClientRect()),
+      message: `Text "${snippet(node.data)}" cannot wrap and gives the page a horizontal scrollbar. Use overflow-wrap: anywhere on long URLs and codes.`,
+      evidence: { overflow: `${by}px wider than the ${vw}px viewport` },
+    };
+  }
+  // Invisible is not gone: visibility: hidden and opacity: 0 boxes still count toward the scroll area.
+  for (const el of allElements()) {
+    if (style(el).display === 'none' || isFixed(el) || hasClippingAncestor(el)) continue;
+    const r = el.getBoundingClientRect();
+    if ((r.width === 0 && r.height === 0) || (r.left >= -1 && r.right <= vw + 1)) continue;
+    return {
+      rule: 'viewport-overflow',
+      severity: 'error',
+      selector: cssPath(el),
+      box: docBox(r),
+      message: `This box is invisible but still gives the page a horizontal scrollbar. visibility: hidden and opacity: 0 keep it in the scroll area, so use display: none or do not park it off-screen.`,
+      evidence: { overflow: `${by}px wider than the ${vw}px viewport`, box: `x ${Math.round(r.left)} to ${Math.round(r.right)}` },
+    };
+  }
+  return {
+    rule: 'viewport-overflow',
+    severity: 'error',
+    selector: 'html',
+    message: `The page is ${by}px wider than the ${vw}px viewport and has a horizontal scrollbar, but no element box explains it. Look at pseudo-elements and transforms.`,
+    evidence: { overflow: `${by}px` },
+  };
 }
 
 interface Bounds {

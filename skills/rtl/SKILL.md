@@ -92,10 +92,10 @@ Physical properties stay on the same side whatever the direction. Logical proper
 - Grid columns, `grid-column: 1 / 3` and `grid-template-areas` follow `dir` too.
 - Push an item to the end with `margin-inline-start: auto` (Tailwind `ms-auto`), not `margin-left: auto`.
 - Absolutely positioned boxes (badges, close buttons, tooltips): `inset-inline-end: 8px`, not `right: 8px`.
-- Off-canvas menus: in an RTL document, overflow to the left becomes scrollable. A `position: absolute` drawer parked at `left: -300px` (fine in LTR) adds a horizontal scrollbar to the RTL page. `position: fixed` boxes never add one, but a closed fixed drawer still belongs on the start side. Hide closed panels with `visibility: hidden` or `display: none`, or move them with `inset-inline-start` plus a direction-aware transform.
+- Off-canvas menus: in an RTL document, overflow to the left becomes scrollable. A `position: absolute` drawer parked at `left: -300px` (fine in LTR) adds a horizontal scrollbar to the RTL page. `position: fixed` boxes never add one. `visibility: hidden` and `opacity: 0` do not help a parked box: it still widens the page. Use `display: none` for closed panels, or keep them in place with `inset-inline-start` and hide them there.
 - Horizontal scroll containers: `scrollLeft` is 0 at the start edge and negative toward the end in RTL in all current browsers. Use `scrollBy({ left: dir === 'rtl' ? -step : step })` or `scrollIntoView({ inline: 'start' })`.
 - JavaScript positioning for tooltips, popovers and dropdowns: read `getComputedStyle(el).direction` and place relative to the start edge, or use a positioning library that supports `-start` / `-end` placements in RTL.
-- Fixed widths wider than a phone screen (`width: 480px` on a card, `min-width` on a table) overflow to the left in RTL. Use `max-inline-size: 100%`.
+- Fixed widths wider than a phone screen (`width: 480px` on a card, `min-width` on a table) overflow to the left in RTL. Use `max-inline-size: 100%`. Long URLs and codes can do the same, so give them `overflow-wrap: anywhere`.
 
 ## Icons: mirror or not
 
