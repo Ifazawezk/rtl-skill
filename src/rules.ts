@@ -101,7 +101,7 @@ export const RULES: Record<RuleId, RuleInfo> = {
     id: 'viewport-overflow',
     title: 'Overflow past the viewport',
     severity: 'error',
-    summary: 'An element sticks out of the viewport and causes a horizontal scrollbar. In RTL this is often an LTR off-canvas menu parked at left: -300px.',
+    summary: 'An element sticks out of the viewport and causes a horizontal scrollbar. In RTL this is often an absolutely positioned menu parked at left: -300px.',
     how: 'Measures every visible element box against the viewport and skips boxes clipped by a scrolling or hidden ancestor.',
     fix: 'Hide off-canvas panels with inset-inline-start and a translate that depends on direction, or with visibility: hidden. Avoid fixed widths wider than small screens.',
     skillSection: 'flex-grid-and-positioning',

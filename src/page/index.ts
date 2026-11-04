@@ -7,6 +7,7 @@ import { checkDir, checkLang, pageLetters } from './checks/document.ts';
 import { checkInputs } from './checks/inputs.ts';
 import { checkIcons } from './checks/icons.ts';
 import { flip, layoutChecks, snapshotLtr, snapshotRtl, unflip } from './checks/layout.ts';
+import { checkClipped, checkLetterSpacing, checkOverflow } from './checks/text.ts';
 import { resetCssCache } from './css.ts';
 import { allElements } from './dom.ts';
 
@@ -37,6 +38,9 @@ function checks(rules: RuleId[]): RawFinding[] {
   if (on('bidi-order')) findings.push(...checkBidi());
   if (on('ltr-input')) findings.push(...checkInputs());
   if (on('icon-mirroring')) findings.push(...checkIcons());
+  if (on('viewport-overflow')) findings.push(...checkOverflow());
+  if (on('text-clipped')) findings.push(...checkClipped());
+  if (on('arabic-letter-spacing')) findings.push(...checkLetterSpacing());
   return findings;
 }
 
