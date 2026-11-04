@@ -26,8 +26,8 @@ const list = (s: string | null) =>
     .map((x) => x.trim())
     .filter(Boolean) as RuleId[];
 
-export function loadFixtures(root: string): Fixture[] {
-  const dir = join(root, 'fixtures');
+export function loadFixtures(root: string, folder = 'fixtures'): Fixture[] {
+  const dir = join(root, folder);
   const files: string[] = [];
   const walk = (d: string) => {
     for (const entry of readdirSync(d, { withFileTypes: true })) {

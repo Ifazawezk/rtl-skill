@@ -13,7 +13,6 @@ describe('findLtrIslands', () => {
     ['تعلم C++ اليوم', ['C++']],
     ['استدع print() أولا', ['print()']],
     ['C# و .NET', ['C#', '.NET']],
-    ['قطر +974', ['+974']],
     ['البريد info@doha.qa للتواصل', ['info@doha.qa']],
     ['استخدم Node.js.', ['Node.js']],
     ['الرابط https://doha.qa/ar/ هنا', ['https://doha.qa/ar/']],
@@ -36,6 +35,7 @@ describe('findLtrIslands', () => {
     ['a percentage', 'خصم 20% اليوم'],
     ['a number with a Latin unit', 'سعة 2 GB فقط'],
     ['sentence punctuation after a word', 'استخدم Python.'],
+    ['a count with a plus sign', 'أكثر من +500 عميل'],
     ['an ISO date', 'تاريخ الوصول 2015-07-19 من المصدر'],
     ['a day-first date', 'آخر تحديث 19-07-2015 من المصدر'],
     ['a handle typed with the @ last so it displays first', 'تابعنا BBCArabic@ الآن'],
@@ -50,6 +50,14 @@ describe('findLtrIslands', () => {
     expect(island.kind).toBe('phone');
   });
 
+  it('keeps a clock time with its AM or PM', () => {
+    expect(texts('من 9:00 AM - 5:00 PM يوميا')).toEqual(['9:00 AM - 5:00 PM']);
+  });
+
+  it('treats a country code inside a tel: link as a phone number', () => {
+    expect(texts('+974', true)).toEqual(['+974']);
+  });
+
   it('treats digit groups inside a tel: link as a phone number', () => {
     expect(texts('5555-1234')).toEqual([]);
     expect(texts('5555-1234', true)).toEqual(['5555-1234']);
@@ -59,13 +67,15 @@ describe('findLtrIslands', () => {
 describe('isPhoneLike', () => {
   it.each([
     ['+974 5555 1234', true],
-    ['+974', true],
     ['00974 5555 1234', true],
     ['800 123 4567', true],
     ['800-123-4567', true],
     ['5555 1234', true],
     ['٥٥٥٥ ١٢٣٤', true],
     ['2020 2024', false],
+    ['+974', false],
+    ['+500', false],
+    ['+1000', false],
     ['10-20', false],
     ['1000-5000', false],
     ['30/10/2026', false],

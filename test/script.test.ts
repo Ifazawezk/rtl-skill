@@ -5,6 +5,7 @@ import {
   hasJoiningLetters,
   isRtlLanguage,
   langMatchesScript,
+  notArabicLanguage,
   rtlShare,
 } from '../src/shared/script.ts';
 
@@ -61,6 +62,18 @@ describe('isRtlLanguage', () => {
     ['', false],
   ])('%s -> %s', (tag, rtl) => {
     expect(isRtlLanguage(tag)).toBe(rtl);
+  });
+});
+
+describe('notArabicLanguage', () => {
+  it('recognizes Urdu and Persian text marked as Arabic', () => {
+    expect(notArabicLanguage('آپ کا آرڈر دو دن میں پہنچ جائے گا اور ہم آپ کو پیغام بھیجیں گے')).toBe('ur');
+    expect(notArabicLanguage('سفارش شما تا دو روز کاری به دست شما می‌رسد و پیگیری می‌کنیم')).toBe('fa');
+  });
+  it('accepts Arabic, including the odd loan letter', () => {
+    expect(notArabicLanguage('مرحبا بكم في متجر الدوحة للإلكترونيات، نتمنى لكم تسوقا ممتعا')).toBeNull();
+    expect(notArabicLanguage('سافر محمد إلى باريس ثم إلى براغ لزيارة صديقه القديم هناك')).toBeNull();
+    expect(notArabicLanguage('قصير')).toBeNull();
   });
 });
 

@@ -50,6 +50,20 @@ export function hasJoiningLetters(text: string): boolean {
 
 export type RtlScript = 'arabic' | 'hebrew' | 'other';
 
+// Letters used in Urdu or Persian but not in standard Arabic.
+const URDU_ONLY = /[\u0679\u0688\u0691\u06BA\u06BE\u06C1\u06D2]/gu;
+const PERSIAN_OR_URDU = /[\u067E\u0686\u0698\u06AF\u06A9\u06CC]/gu;
+
+/** Names a language that fits the text better than Arabic, or null when Arabic fits. */
+export function notArabicLanguage(text: string): 'ur' | 'fa' | null {
+  const letters = countLetters(text).arabic;
+  if (letters < 20) return null;
+  const urdu = text.match(URDU_ONLY)?.length ?? 0;
+  const other = text.match(PERSIAN_OR_URDU)?.length ?? 0;
+  if (urdu / letters >= 0.02) return 'ur';
+  return other / letters >= 0.04 ? 'fa' : null;
+}
+
 /** The RTL script with the most letters, or null when RTL letters are a minority. */
 export function dominantRtlScript(counts: LetterCounts): RtlScript | null {
   if (counts.rtl === 0 || counts.rtl < counts.ltr) return null;
@@ -79,6 +93,10 @@ function parseLang(tag: string): ParsedLang | null {
   if (!/^[a-z]{2,8}$/.test(primary)) return null;
   const script = parts.slice(1).find((p) => /^[a-z]{4}$/i.test(p)) ?? null;
   return { primary, script: script ? script.toLowerCase() : null };
+}
+
+export function isArabicTag(tag: string): boolean {
+  return parseLang(tag)?.primary === 'ar';
 }
 
 /** True when a BCP 47 tag names a language normally written right to left. */

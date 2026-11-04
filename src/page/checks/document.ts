@@ -1,5 +1,5 @@
 // dir-attribute and lang-attribute: is the document set up as RTL at all?
-import { countLetters, dominantRtlScript, langMatchesScript, rtlShare, type LetterCounts } from '../../shared/script.ts';
+import { countLetters, dominantRtlScript, isArabicTag, langMatchesScript, notArabicLanguage, rtlShare, type LetterCounts } from '../../shared/script.ts';
 import type { RawFinding } from '../../types.ts';
 import { allElements, cssPath, docBox, isVisible, ownText, snippet, style } from '../dom.ts';
 
@@ -128,6 +128,18 @@ export function checkLang(counts: LetterCounts): RawFinding[] {
         selector: 'html',
         message: `lang="${lang}" does not match the page text, which is mostly ${SCRIPT_NAME[script]}. Use a matching language such as lang="${suggestion}".`,
         evidence: { html: `<html lang="${lang}">`, script: SCRIPT_NAME[script] },
+      },
+    ];
+  }
+  const better = isArabicTag(lang) ? notArabicLanguage(document.body.innerText) : null;
+  if (better) {
+    return [
+      {
+        rule: 'lang-attribute',
+        severity: 'warning',
+        selector: 'html',
+        message: `lang="${lang}" says Arabic, but the text uses letters of ${better === 'ur' ? 'Urdu' : 'Persian'}. Use lang="${better}" so fonts and screen readers treat it correctly.`,
+        evidence: { html: `<html lang="${lang}">`, suggestion: `lang="${better}"` },
       },
     ];
   }

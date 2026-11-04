@@ -50,6 +50,7 @@
     "prepare": "node scripts/build.mjs",
     "skill": "node scripts/build-skill.ts",
     "skill:check": "node scripts/build-skill.ts --check",
+    "bench": "node scripts/bench.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

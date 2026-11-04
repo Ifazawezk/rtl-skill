@@ -81,6 +81,7 @@ function hasWeakChars(s: string): boolean {
   return /[^A-Za-z\u00C0-\u024F0-9\u0660-\u0669\u06F0-\u06F9]/.test(s);
 }
 
+const CLOCK = /\d{1,2}:\d{2}\s*$/;
 const YEAR = /^(1[3-9]|20)\d\d$/;
 const ISO_DATE = /^(\d{4}-\d{1,2}-\d{1,2}|\d{1,2}-\d{1,2}-\d{4})$/;
 
@@ -91,8 +92,9 @@ export function isPhoneLike(run: string, telContext = false): boolean {
   const digits = s.replace(/\D/g, '');
   const groups = s.split(/[\s\u00A0\-()]+/).filter(Boolean);
   if (!groups.every((g) => /^\+?\d+$/.test(g))) return false;
-  if (s.startsWith('+')) return digits.length >= 3;
-  if (telContext) return groups.length >= 2 || digits.length >= 7;
+  if (telContext) return s.startsWith('+') || groups.length >= 2 || digits.length >= 7;
+  // "+500 customers" is a count, so a plus sign needs a full number behind it.
+  if (s.startsWith('+')) return digits.length >= 7;
   if (s.startsWith('00') && digits.length >= 8) return true;
   if (groups.length >= 3) return digits.length >= 7;
   if (groups.length === 2) {
@@ -130,6 +132,8 @@ export function findLtrIslands(text: string, options: { telContext?: boolean } =
     // Start at the first Latin letter, keeping symbols glued to it (#A-1029, .NET).
     // Leading numbers with spaces ("2 GB") read right to left and are left alone.
     let start = s + firstLetter;
+    const clock = CLOCK.exec(run.slice(0, firstLetter));
+    if (clock && /^(am|pm)\b/i.test(run.slice(firstLetter))) start = s + clock.index;
     while (start > s && PREFIX.test(text[start - 1])) start--;
     const latin = text.slice(start, e);
     if (latin.length >= 2 && hasWeakChars(latin)) islands.push({ start, end: e, text: latin, kind: 'latin' });

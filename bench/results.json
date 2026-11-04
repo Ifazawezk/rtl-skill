@@ -1,0 +1,922 @@
+{
+  "date": "2026-10-30",
+  "chromium": "156.0.8078.4",
+  "elapsedMs": 9771,
+  "findings": 47,
+  "overall": {
+    "tp": 38,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1,
+    "recall": 1
+  },
+  "perRule": {
+    "arabic-letter-spacing": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "bidi-order": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "dir-attribute": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "icon-mirroring": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "lang-attribute": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "ltr-input": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "mirror-mismatch": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "physical-css": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "text-clipped": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "viewport-overflow": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "falsePositives": [],
+  "falseNegatives": [],
+  "pages": {
+    "bug": 38,
+    "fixed": 38,
+    "clean": 20,
+    "passed": 96
+  },
+  "results": [
+    {
+      "path": "fixtures/arabic-letter-spacing/eyebrow-tracking.bug.html",
+      "kind": "bug",
+      "expect": [
+        "arabic-letter-spacing"
+      ],
+      "allow": [],
+      "found": [
+        "arabic-letter-spacing"
+      ]
+    },
+    {
+      "path": "fixtures/arabic-letter-spacing/eyebrow-tracking.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/arabic-letter-spacing/inherited-from-body.bug.html",
+      "kind": "bug",
+      "expect": [
+        "arabic-letter-spacing"
+      ],
+      "allow": [],
+      "found": [
+        "arabic-letter-spacing"
+      ]
+    },
+    {
+      "path": "fixtures/arabic-letter-spacing/inherited-from-body.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/arabic-digit-phone.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/arabic-digit-phone.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/code-in-sentence.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/code-in-sentence.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/order-number.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/order-number.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/phone-in-sentence.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/phone-in-sentence.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/phone-in-table-cell.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/phone-in-table-cell.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/tel-link.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/tel-link.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/direction-overrides.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/english-page.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/hebrew-letter-spacing.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/hidden-panels.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/icons-that-stay.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/intentional-truncation.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/ltr-islands.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/native-controls.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/overlays.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/persian-page.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/ranges-and-numbers.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/real-world-carousel-peek.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/real-world-dates.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/real-world-handles.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/real-world-rank-digits.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/swapped-chevrons.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/symmetric-spacing.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/tailwind-style-utilities.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/transform-origin-aware.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/clean/user-content.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/dir-attribute/css-direction.bug.html",
+      "kind": "bug",
+      "expect": [
+        "dir-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "dir-attribute"
+      ]
+    },
+    {
+      "path": "fixtures/dir-attribute/css-direction.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/dir-attribute/no-dir.bug.html",
+      "kind": "bug",
+      "expect": [
+        "dir-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "dir-attribute"
+      ]
+    },
+    {
+      "path": "fixtures/dir-attribute/no-dir.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/dir-attribute/rtl-text-in-ltr-block.bug.html",
+      "kind": "bug",
+      "expect": [
+        "dir-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "dir-attribute"
+      ]
+    },
+    {
+      "path": "fixtures/dir-attribute/rtl-text-in-ltr-block.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/icon-mirroring/breadcrumb-separator.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "fixtures/icon-mirroring/breadcrumb-separator.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/icon-mirroring/font-icon-class.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "fixtures/icon-mirroring/font-icon-class.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/icon-mirroring/image-file-name.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "fixtures/icon-mirroring/image-file-name.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/icon-mirroring/mirrored-media.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "fixtures/icon-mirroring/mirrored-media.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/icon-mirroring/pagination-chevrons.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "fixtures/icon-mirroring/pagination-chevrons.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/icon-mirroring/text-arrow.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "fixtures/icon-mirroring/text-arrow.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/lang-attribute/english-lang.bug.html",
+      "kind": "bug",
+      "expect": [
+        "lang-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "lang-attribute"
+      ]
+    },
+    {
+      "path": "fixtures/lang-attribute/english-lang.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/lang-attribute/hebrew-marked-arabic.bug.html",
+      "kind": "bug",
+      "expect": [
+        "lang-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "lang-attribute"
+      ]
+    },
+    {
+      "path": "fixtures/lang-attribute/hebrew-marked-arabic.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/lang-attribute/no-lang.bug.html",
+      "kind": "bug",
+      "expect": [
+        "lang-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "lang-attribute"
+      ]
+    },
+    {
+      "path": "fixtures/lang-attribute/no-lang.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/ltr-input/email-and-url.bug.html",
+      "kind": "bug",
+      "expect": [
+        "ltr-input"
+      ],
+      "allow": [],
+      "found": [
+        "ltr-input"
+      ]
+    },
+    {
+      "path": "fixtures/ltr-input/email-and-url.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/ltr-input/text-field-hints.bug.html",
+      "kind": "bug",
+      "expect": [
+        "ltr-input"
+      ],
+      "allow": [],
+      "found": [
+        "ltr-input"
+      ]
+    },
+    {
+      "path": "fixtures/ltr-input/text-field-hints.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/mirror-mismatch/progress-origin.bug.html",
+      "kind": "bug",
+      "expect": [
+        "mirror-mismatch"
+      ],
+      "allow": [],
+      "found": [
+        "mirror-mismatch"
+      ]
+    },
+    {
+      "path": "fixtures/mirror-mismatch/progress-origin.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/mirror-mismatch/row-drift.bug.html",
+      "kind": "bug",
+      "expect": [
+        "mirror-mismatch"
+      ],
+      "allow": [],
+      "found": [
+        "mirror-mismatch"
+      ]
+    },
+    {
+      "path": "fixtures/mirror-mismatch/row-drift.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/mirror-mismatch/translated-thumb.bug.html",
+      "kind": "bug",
+      "expect": [
+        "mirror-mismatch"
+      ],
+      "allow": [],
+      "found": [
+        "mirror-mismatch"
+      ]
+    },
+    {
+      "path": "fixtures/mirror-mismatch/translated-thumb.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/badge-position.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/badge-position.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/float-image.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/float-image.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/icon-margin.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/icon-margin.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/push-with-margin-auto.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/push-with-margin-auto.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/quote-border.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/quote-border.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/text-align-latin.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/text-align-latin.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/physical-css/text-align-left.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/physical-css/text-align-left.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/text-clipped/fixed-height-label.bug.html",
+      "kind": "bug",
+      "expect": [
+        "text-clipped"
+      ],
+      "allow": [],
+      "found": [
+        "text-clipped"
+      ]
+    },
+    {
+      "path": "fixtures/text-clipped/fixed-height-label.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/text-clipped/fixed-width-button.bug.html",
+      "kind": "bug",
+      "expect": [
+        "text-clipped"
+      ],
+      "allow": [],
+      "found": [
+        "text-clipped"
+      ]
+    },
+    {
+      "path": "fixtures/text-clipped/fixed-width-button.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/text-clipped/spills-out-of-chip.bug.html",
+      "kind": "bug",
+      "expect": [
+        "text-clipped"
+      ],
+      "allow": [],
+      "found": [
+        "text-clipped"
+      ]
+    },
+    {
+      "path": "fixtures/text-clipped/spills-out-of-chip.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/viewport-overflow/fixed-width-card.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [],
+      "found": [
+        "viewport-overflow"
+      ]
+    },
+    {
+      "path": "fixtures/viewport-overflow/fixed-width-card.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/viewport-overflow/offcanvas-drawer.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [
+        "physical-css"
+      ],
+      "found": [
+        "viewport-overflow",
+        "physical-css"
+      ]
+    },
+    {
+      "path": "fixtures/viewport-overflow/offcanvas-drawer.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/viewport-overflow/wide-table-on-phone.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [],
+      "found": [
+        "viewport-overflow"
+      ]
+    },
+    {
+      "path": "fixtures/viewport-overflow/wide-table-on-phone.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    }
+  ]
+}

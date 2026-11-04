@@ -128,9 +128,14 @@ function physicalCandidates(): Physical[] {
     const unchanged = (a: number, b: number, c: number, d: number) => close(a, c) && close(b, d);
     if (!close(r.ml, r.mr) && unchanged(r.ml, r.mr, l.ml, l.mr)) {
       out.push({ el, group: 'margin', longhands: sides('margin', r.ml, r.mr) });
+    } else if (r.display !== 'inline' && !unchanged(r.ml, r.mr, l.mr, l.ml) && !usesAutoMargin(el)) {
+      out.push({ el, group: 'margin', longhands: ['margin-left', 'margin-right'] });
     }
     if (!close(r.pl, r.pr) && unchanged(r.pl, r.pr, l.pl, l.pr)) {
       out.push({ el, group: 'padding', longhands: sides('padding', r.pl, r.pr) });
+    } else if (!unchanged(r.pl, r.pr, l.pr, l.pl)) {
+      // Neither kept nor swapped: a physical reset is fighting a logical default on one side.
+      out.push({ el, group: 'padding', longhands: ['padding-left', 'padding-right'] });
     }
     if (!close(r.bl, r.br) && unchanged(r.bl, r.br, l.bl, l.br)) {
       out.push({
@@ -166,6 +171,11 @@ function physicalCandidates(): Physical[] {
     }
   }
   return out;
+}
+
+/** Auto margins resolve to used lengths that move with the layout, so they prove nothing here. */
+function usesAutoMargin(el: Element): boolean {
+  return ['margin-left', 'margin-right'].some((p) => findDeclaration(el, p)?.value.includes('auto'));
 }
 
 function sides(prop: string, left: number, right: number): string[] {

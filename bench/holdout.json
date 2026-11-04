@@ -1,0 +1,482 @@
+{
+  "date": "2026-10-30",
+  "chromium": "156.0.8078.4",
+  "elapsedMs": 4245,
+  "findings": 22,
+  "overall": {
+    "tp": 22,
+    "fp": 0,
+    "fn": 3,
+    "precision": 1,
+    "recall": 0.88
+  },
+  "perRule": {
+    "arabic-letter-spacing": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "bidi-order": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1,
+      "recall": 0.8
+    },
+    "dir-attribute": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "icon-mirroring": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1,
+      "recall": 0.8
+    },
+    "lang-attribute": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "ltr-input": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "mirror-mismatch": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "precision": null,
+      "recall": 0
+    },
+    "physical-css": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "text-clipped": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "viewport-overflow": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "falsePositives": [],
+  "falseNegatives": [
+    {
+      "path": "holdout/gradient-progress.bug.html",
+      "rule": "mirror-mismatch"
+    },
+    {
+      "path": "holdout/phone-split-by-bold.bug.html",
+      "rule": "bidi-order"
+    },
+    {
+      "path": "holdout/unnamed-inline-svg.bug.html",
+      "rule": "icon-mirroring"
+    }
+  ],
+  "pages": {
+    "bug": 25,
+    "fixed": 0,
+    "clean": 15,
+    "passed": 37
+  },
+  "results": [
+    {
+      "path": "holdout/arabic-digit-dates.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/body-overrides-to-ltr.bug.html",
+      "kind": "bug",
+      "expect": [
+        "dir-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "dir-attribute"
+      ]
+    },
+    {
+      "path": "holdout/brand-list.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/centered-logo.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/chat-bubbles.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/citation-marks.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/css-background-arrow.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout/currency-forms.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/english-island-paragraph.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/external-stylesheet.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout/fixed-side-rail.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/flex-columns-on-phone.bug.html",
+      "kind": "bug",
+      "expect": [
+        "viewport-overflow"
+      ],
+      "allow": [],
+      "found": [
+        "viewport-overflow"
+      ]
+    },
+    {
+      "path": "holdout/gradient-progress.bug.html",
+      "kind": "bug",
+      "expect": [
+        "mirror-mismatch"
+      ],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/hashtag.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout/hebrew-phone.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout/inset-shorthand.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout/list-reset-left-only.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout/ltr-map-widget.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/marquee-animation.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/mask-image-chevron.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout/mirrored-logo.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout/nested-ellipsis.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/persian-letter-spacing.bug.html",
+      "kind": "bug",
+      "expect": [
+        "arabic-letter-spacing"
+      ],
+      "allow": [],
+      "found": [
+        "arabic-letter-spacing"
+      ]
+    },
+    {
+      "path": "holdout/phone-split-by-bold.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/plus-counts.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/pseudo-element-arrow.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": [
+        "icon-mirroring"
+      ]
+    },
+    {
+      "path": "holdout/radius-shorthand.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout/rule-inside-media-query.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout/script-sets-margin.bug.html",
+      "kind": "bug",
+      "expect": [
+        "physical-css"
+      ],
+      "allow": [],
+      "found": [
+        "physical-css"
+      ]
+    },
+    {
+      "path": "holdout/temperatures.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/text-field-website.bug.html",
+      "kind": "bug",
+      "expect": [
+        "ltr-input"
+      ],
+      "allow": [],
+      "found": [
+        "ltr-input"
+      ]
+    },
+    {
+      "path": "holdout/tight-fixed-height.bug.html",
+      "kind": "bug",
+      "expect": [
+        "text-clipped"
+      ],
+      "allow": [],
+      "found": [
+        "text-clipped"
+      ]
+    },
+    {
+      "path": "holdout/time-range-latin.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout/unnamed-inline-svg.bug.html",
+      "kind": "bug",
+      "expect": [
+        "icon-mirroring"
+      ],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/urdu-letter-spacing.bug.html",
+      "kind": "bug",
+      "expect": [
+        "arabic-letter-spacing"
+      ],
+      "allow": [],
+      "found": [
+        "arabic-letter-spacing"
+      ]
+    },
+    {
+      "path": "holdout/urdu-marked-arabic.bug.html",
+      "kind": "bug",
+      "expect": [
+        "lang-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "lang-attribute"
+      ]
+    },
+    {
+      "path": "holdout/url-trailing-slash.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "holdout/vertical-chevrons.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/wide-table-in-scroller.html",
+      "kind": "clean",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "holdout/wrapper-only-dir.bug.html",
+      "kind": "bug",
+      "expect": [
+        "dir-attribute"
+      ],
+      "allow": [],
+      "found": [
+        "dir-attribute"
+      ]
+    }
+  ]
+}

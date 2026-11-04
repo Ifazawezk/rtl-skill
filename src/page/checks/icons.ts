@@ -14,7 +14,7 @@ import {
   type Pointing,
 } from '../../shared/icons.ts';
 import type { RawFinding } from '../../types.ts';
-import { cssPath, docBox, isVisible, isVisuallyHidden, snippet, style, textNodes } from '../dom.ts';
+import { allElements, cssPath, docBox, isVisible, isVisuallyHidden, snippet, style, textNodes } from '../dom.ts';
 
 const ICON_SELECTOR = [
   'svg',
@@ -66,6 +66,20 @@ function iconName(el: Element): string {
     .join(' ');
 }
 
+/** Small empty boxes painted with an image, whatever their class is called. */
+function paintedIcons(): Element[] {
+  const out: Element[] = [];
+  for (const el of allElements()) {
+    if ((el.textContent || '').trim() || el.children.length) continue;
+    const cs = style(el);
+    const painted = (cs.backgroundImage + cs.maskImage).includes('url(');
+    if (!painted) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width > 0 && r.width <= MAX_ICON_SIZE && r.height > 0 && r.height <= MAX_ICON_SIZE) out.push(el);
+  }
+  return out;
+}
+
 function looksLikeIcon(el: Element): boolean {
   const r = el.getBoundingClientRect();
   if (r.width > MAX_ICON_SIZE || r.height > MAX_ICON_SIZE) return false;
@@ -88,6 +102,7 @@ function label(el: Element): string {
   const own = [el.getAttribute('aria-label'), el.getAttribute('title'), el.getAttribute('alt')];
   const host = el.closest(INTERACTIVE);
   if (host) own.push(host.getAttribute('aria-label'), host.getAttribute('title'), (host.textContent || '').slice(0, 80));
+  else if ((el.textContent || '').length <= 80) own.push(el.textContent);
   return own.filter(Boolean).join(' ');
 }
 
@@ -115,7 +130,8 @@ export function checkIcons(): RawFinding[] {
   const findings: RawFinding[] = [];
   const claimed = new Set<Element>();
 
-  for (const el of Array.from(document.querySelectorAll(ICON_SELECTOR))) {
+  const candidates = new Set([...Array.from(document.querySelectorAll(ICON_SELECTOR)), ...paintedIcons()]);
+  for (const el of candidates) {
     if (claimed.has(el) || !el.parentElement) continue;
     if (!isVisible(el) || isVisuallyHidden(el) || !looksLikeIcon(el)) continue;
     if (style(el.parentElement).direction !== 'rtl') continue;
@@ -176,6 +192,32 @@ export function checkIcons(): RawFinding[] {
         fromLabel !== null,
       );
       finding.message = `The arrow character "${glyph}" points ${pointing}, but ${meaning === 'forward' ? 'forward' : 'back'} is ${expectedPointing(meaning)} in RTL. Arrow characters are not mirrored by the bidi algorithm, so write the opposite arrow or use a mirrored icon.`;
+      findings.push(finding);
+    }
+  }
+  findings.push(...generatedArrows());
+  return findings;
+}
+
+/** Arrows written in CSS content are invisible to the DOM, so ask for the pseudo-elements. */
+function generatedArrows(): RawFinding[] {
+  const findings: RawFinding[] = [];
+  for (const el of allElements()) {
+    if (style(el).direction !== 'rtl' || !isVisible(el)) continue;
+    for (const pseudo of ['::before', '::after']) {
+      const content = getComputedStyle(el, pseudo).content;
+      if (!content || content === 'none' || content === 'normal') continue;
+      const glyph = content.match(ARROW_RE)?.[0];
+      if (!glyph) continue;
+      const flipped = isFlipped(el);
+      if (flipped === null) continue;
+      const fromLabel = classifyLabel(label(el));
+      const drawn = ARROW_GLYPHS[glyph];
+      const pointing = flipped ? opposite(drawn) : drawn;
+      const meaning = fromLabel ?? (drawn === 'right' ? 'forward' : null);
+      if (!meaning || pointing === expectedPointing(meaning)) continue;
+      const finding = directionalFinding(el, docBox(el.getBoundingClientRect()), `The arrow "${glyph}" in ${pseudo}`, pointing, meaning, fromLabel !== null);
+      finding.message = `The arrow "${glyph}" in ${pseudo} points ${pointing}, but ${meaning === 'forward' ? 'forward' : 'back'} is ${expectedPointing(meaning)} in RTL. Arrow characters are not mirrored by the bidi algorithm, so set the opposite arrow under [dir="rtl"].`;
       findings.push(finding);
     }
   }
