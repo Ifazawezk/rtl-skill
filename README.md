@@ -168,7 +168,7 @@ Some bugs only show up in another browser. Here is `letter-spacing` on Arabic in
 
 <p align="center"><img src="docs/letter-spacing.png" alt="The same Arabic text with letter-spacing: joined in Chromium, disconnected letters in WebKit" width="85%"></p>
 
-Four of the checks measure the rendered page instead of reading the source. `bidi-order` finds LTR runs in the text and asks the browser for the position of every character. If the characters of `+974 5555 1234` do not go left to right on screen, the run is out of order, and no regex over the source can see that. `mirror-mismatch` compares every box with its mirrored LTR position, which catches `transform` and `transform-origin` problems that a CSS scan misses.
+Four of the checks measure the rendered page instead of reading the source. `bidi-order` finds LTR runs in the text and asks the browser for the position of every character. If the characters of `+974 5555 1234` do not go left to right on screen, the run is out of order, and no regex over the source can see that. A run can cross tags, or the separate text nodes React writes, so `+974 <b>5555</b> 1234` is still read as one number. `mirror-mismatch` compares every box with its mirrored LTR position, which catches `transform` and `transform-origin` problems that a CSS scan misses.
 
 `physical-css` renders the page in RTL, flips it to LTR and measures again. Logical CSS swaps sides and physical CSS stays put, whatever the source looks like, so `[dir="rtl"]` overrides written with `left` and `right` pass because they do flip. It then finds the rule that won the cascade and names its file and line. Stylesheets the page may not be able to read, such as anything on a CDN, are fetched separately. `icon-mirroring` takes the meaning from the button label ("التالي", "رجوع") and the artwork from the icon name, then resolves every CSS transform up the tree to see where the icon points on screen.
 
@@ -190,8 +190,8 @@ The unit is one rule on one page. Full tables are in [`bench/`](bench), and `npm
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Blind round 1, written after freezing the checker, hard on purpose | 40 | 16 | 1 | 9 | **94.1%** | **64.0%** |
 | Blind round 2, new pages after fixing what round 1 found | 36 | 19 | 0 | 1 | **100.0%** | **95.0%** |
-| Round 1 again with current code (no longer blind) | 40 | 22 | 0 | 3 | 100.0% | 88.0% |
-| Regression fixtures the checker was developed against | 100 | 40 | 0 | 0 | 100.0% | 100.0% |
+| Round 1 again with current code (no longer blind) | 40 | 23 | 0 | 2 | 100.0% | 92.0% |
+| Regression fixtures the checker was developed against | 102 | 41 | 0 | 0 | 100.0% | 100.0% |
 
 The blind rows are first runs, saved as [`holdout-first-run.md`](bench/holdout-first-run.md) and [`holdout-2-first-run.md`](bench/holdout-2-first-run.md) before any change was made for those pages. Expect recall on your code to fall somewhere between those two rows. Round 2 has only 20 bug pages, the same person wrote the pages and the checker, and nobody independent has tested it yet. One round 1 miss was a mistake in the test page: another rule overrode the bug, so there was nothing to find. The regression row only says nothing has broken, since those pages shaped the code, and 100% on them proves very little.
 
@@ -210,7 +210,6 @@ The live pages had real bugs, such as `#coordinates` showing as `coordinates#`. 
 
 - A bare inline `<svg>` has no class, id or sprite name, so nothing says which way it points. Give it a class such as `icon-chevron-right`.
 - Direction that exists only in paint is invisible to it. Gradients, `<canvas>` charts and background images are not boxes, so a progress bar drawn with `linear-gradient(to right, ...)` is missed.
-- In `+974 <b>5555</b> 1234`, each piece is checked on its own and no piece looks like a phone number.
 - Sites that flip their CSS at build time with RTLCSS or CSSJanus have an RTL stylesheet that really says `float: right`, and that is correct. `physical-css` and `mirror-mismatch` warn anyway, so use `--skip physical-css,mirror-mismatch`.
 - It checks the page as loaded, in one viewport. Closed menus and later steps need their own URLs.
 - Results were measured on Windows with Chromium 156. `text-clipped` depends on fonts, so a machine with no Arabic fonts can give different results.

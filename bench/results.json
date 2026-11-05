@@ -1,10 +1,10 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-11-05",
   "chromium": "156.0.8078.4",
-  "elapsedMs": 9108,
-  "findings": 49,
+  "elapsedMs": 9046,
+  "findings": 51,
   "overall": {
-    "tp": 40,
+    "tp": 41,
     "fp": 0,
     "fn": 0,
     "precision": 1,
@@ -19,7 +19,7 @@
       "recall": 1
     },
     "bidi-order": {
-      "tp": 6,
+      "tp": 7,
       "fp": 0,
       "fn": 0,
       "precision": 1,
@@ -85,10 +85,10 @@
   "falsePositives": [],
   "falseNegatives": [],
   "pages": {
-    "bug": 40,
-    "fixed": 40,
+    "bug": 41,
+    "fixed": 41,
     "clean": 20,
-    "passed": 100
+    "passed": 102
   },
   "results": [
     {
@@ -212,6 +212,24 @@
     },
     {
       "path": "fixtures/bidi-order/phone-in-table-cell.fixed.html",
+      "kind": "fixed",
+      "expect": [],
+      "allow": [],
+      "found": []
+    },
+    {
+      "path": "fixtures/bidi-order/phone-split-across-nodes.bug.html",
+      "kind": "bug",
+      "expect": [
+        "bidi-order"
+      ],
+      "allow": [],
+      "found": [
+        "bidi-order"
+      ]
+    },
+    {
+      "path": "fixtures/bidi-order/phone-split-across-nodes.fixed.html",
       "kind": "fixed",
       "expect": [],
       "allow": [],
